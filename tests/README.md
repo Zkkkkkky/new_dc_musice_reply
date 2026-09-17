@@ -15,3 +15,5 @@ python -m unittest discover -s tests -v
 `test_expanded_chr_sync.py` 验证完整 256 KiB 旧 CHR 影子到活动 CHR 的单向同步、区域边界与源 ROM 保护。
 
 `test_legacy_modifier_expanded_chr.py` 验证旧修改器 CHR 常量补丁只改动每个 `imm32` 的必要字节，并对额外或错位常量拒绝输出。
+
+`test_modifier_skip_launcher.py` 验证新入口的窗口匹配、三秒初始化延时、内部核心哈希锁定、便携 ZIP 边界，以及旧影子/活动 CHR 两种单边写入的差分同步。

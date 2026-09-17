@@ -112,11 +112,20 @@ def main() -> None:
     shutil.copyfile(ENGINE_SOURCE, DELIVERY_ENGINE)
     shutil.copyfile(README_SOURCE, DELIVERY_README)
 
-    config_destination = DELIVERY_ROOT / "默认配置文件"
-    config_destination.mkdir(parents=True, exist_ok=True)
-    for source in sorted(CONFIG_SOURCE.iterdir()):
-        if source.is_file() and source.suffix.lower() in ALLOWED_CONFIG_SUFFIXES:
-            shutil.copyfile(source, config_destination / source.name)
+    # The legacy core resolves its data tables relative to the executable,
+    # not only from the process working directory.  Keep the user-facing
+    # copy at the package root and mirror the same files next to the core;
+    # otherwise opening some ROMs leaves its lookup arrays empty and raises
+    # an out-of-range runtime error.
+    config_destinations = (
+        DELIVERY_ROOT / "默认配置文件",
+        DELIVERY_ENGINE.parent / "默认配置文件",
+    )
+    for config_destination in config_destinations:
+        config_destination.mkdir(parents=True, exist_ok=True)
+        for source in sorted(CONFIG_SOURCE.iterdir()):
+            if source.is_file() and source.suffix.lower() in ALLOWED_CONFIG_SUFFIXES:
+                shutil.copyfile(source, config_destination / source.name)
 
     rebuild_zip()
     print(f"compiler: {compiler}")

@@ -14,6 +14,8 @@ RECONCILER_SOURCE = ROOT / "src" / "modifier_launcher" / "ChrReconciler.cs"
 DELIVERY = ROOT / "dist" / "tools" / "新DC扩容专用修改器"
 LAUNCHER = DELIVERY / "新DC扩容专用修改器.exe"
 ENGINE = DELIVERY / "内部文件" / "修改器核心.exe"
+ROOT_CONFIG = DELIVERY / "默认配置文件"
+ENGINE_CONFIG = DELIVERY / "内部文件" / "默认配置文件"
 ARCHIVE = ROOT / "dist" / "tools" / "新DC扩容专用修改器.zip"
 EXPECTED_ENGINE_SHA256 = (
     "4C7F2980CC780253050174C7A6E00A506C7D1EA29E74B90128BDA9ABD9335947"
@@ -44,6 +46,20 @@ class ModifierSkipLauncherTests(unittest.TestCase):
         self.assertEqual(LAUNCHER.read_bytes()[:2], b"MZ")
         self.assertLess(LAUNCHER.stat().st_size, 100_000)
         self.assertNotEqual(sha256(LAUNCHER), sha256(ENGINE))
+
+    def test_engine_has_an_identical_local_config_mirror(self) -> None:
+        root_files = {
+            path.name: path.read_bytes()
+            for path in ROOT_CONFIG.iterdir()
+            if path.is_file() and path.suffix.lower() in {".ini", ".dat"}
+        }
+        engine_files = {
+            path.name: path.read_bytes()
+            for path in ENGINE_CONFIG.iterdir()
+            if path.is_file() and path.suffix.lower() in {".ini", ".dat"}
+        }
+        self.assertGreater(len(root_files), 0)
+        self.assertEqual(engine_files, root_files)
 
     def test_reconciler_handles_each_one_sided_chr_write(self) -> None:
         size = 0x140010
@@ -141,6 +157,7 @@ class ModifierSkipLauncherTests(unittest.TestCase):
         root = "新DC扩容专用修改器/"
         self.assertIn(root + "新DC扩容专用修改器.exe", names)
         self.assertIn(root + "内部文件/修改器核心.exe", names)
+        self.assertIn(root + "内部文件/默认配置文件/码表.ini", names)
         self.assertIn(root + "使用说明.md", names)
         forbidden = {".nes", ".cdl", ".deb", ".pdb"}
         self.assertFalse(any(Path(name).suffix.lower() in forbidden for name in names))

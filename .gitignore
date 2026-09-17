@@ -6,6 +6,8 @@
 # Local inputs; keep only the directory guidance
 /inputs/**
 !/inputs/README.md
+/.codex-remote-attachments/
+/dist/tools/新DC扩容专用修改器/内部文件/自动备份/
 
 # Language and tool caches
 __pycache__/
@@ -26,4 +28,3 @@ __pycache__/
 
 # Uncurated logs belong outside Git; selected evidence may be force-added
 *.log
-

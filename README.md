@@ -16,3 +16,6 @@
 
 当前可交付 ROM 位于 `dist/roms/`，文件大小和哈希见 [`dist/MANIFEST.md`](dist/MANIFEST.md)。
 
+两份 15 曲扩容未绑定版已经完成。布局、命令表、FCEUX 兼容原理和修改器使用顺序见
+[`docs/扩容15曲实现与命令表.md`](docs/扩容15曲实现与命令表.md)，运行时证据见
+[`evidence/2026-09-17-扩容15曲/验证记录.md`](evidence/2026-09-17-扩容15曲/验证记录.md)。

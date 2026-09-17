@@ -1,0 +1,143 @@
+{
+  "format": "DC refined15 track manifest v1",
+  "sourceDirectory": "assets/music/01 精修通用驱动（F000-F100-F160）",
+  "count": 15,
+  "commands": "0x94-0x9C, 0xA0-0xA5; 0x9D-0x9F reserved empty",
+  "tracks": [
+    {
+      "index": 0,
+      "logicalId": "0x14",
+      "command": "0x94",
+      "dataBank": "0x65",
+      "filename": "Alone in the Wind - 精修.nsf",
+      "nsfSha256": "C7E691A9E5D006D7368705654EE5B6CB01BE1B395071316BCD8F938C0096A278",
+      "payloadBytes": 8192
+    },
+    {
+      "index": 1,
+      "logicalId": "0x15",
+      "command": "0x95",
+      "dataBank": "0x66",
+      "filename": "Awake! Zeorymer - 冥王.nsf",
+      "nsfSha256": "AB37AEB4ED21741C05BD18FFD052484247DAB84B778EEC49148D3034056B1373",
+      "payloadBytes": 8192
+    },
+    {
+      "index": 2,
+      "logicalId": "0x22",
+      "command": "0xA5",
+      "dataBank": "0x67",
+      "filename": "Beyond the Time -逆袭的夏亚精修.nsf",
+      "nsfSha256": "983C1210919040AFCDD7A0405F00ED2E3FE5A7C46F796E0E1FA87003B703772C",
+      "payloadBytes": 12288
+    },
+    {
+      "index": 3,
+      "logicalId": "0x16",
+      "command": "0x96",
+      "dataBank": "0x68",
+      "filename": "Cherry Blossom Illusion - 樱花精修.nsf",
+      "nsfSha256": "F2C8570FCDB42699E02D0D2587A4AFF4105E89BDC75E9993DA2DD427F057B810",
+      "payloadBytes": 8192
+    },
+    {
+      "index": 4,
+      "logicalId": "0x17",
+      "command": "0x97",
+      "dataBank": "0x69",
+      "filename": "Dark Prison - 白河愁精修2.nsf",
+      "nsfSha256": "F9094E9D196B3456673F024A3BBC14584CC0926F27CA2182C1C791DE0EF24BCC",
+      "payloadBytes": 12288
+    },
+    {
+      "index": 5,
+      "logicalId": "0x18",
+      "command": "0x98",
+      "dataBank": "0x6A",
+      "filename": "Doomsday - 精修.nsf",
+      "nsfSha256": "C4AE81730E1E64CFD77BEF81EC0144722FC8BC3D6534E91F085EF1DE883CDA8E",
+      "payloadBytes": 8192
+    },
+    {
+      "index": 6,
+      "logicalId": "0x19",
+      "command": "0x99",
+      "dataBank": "0x6B",
+      "filename": "Fairy Dang-Sing - 精修.nsf",
+      "nsfSha256": "D1149C5126EE733439C7C564BEABB7A147DDE7BFFE1424BB96C3EC05DCCCFBBD",
+      "payloadBytes": 12288
+    },
+    {
+      "index": 7,
+      "logicalId": "0x1A",
+      "command": "0x9A",
+      "dataBank": "0x6C",
+      "filename": "Flapper Girl - 琉妮精修.nsf",
+      "nsfSha256": "846E1D4527599ACC1B9EB8D0E093AA560E96C48EDD9E1362687345E398AF6CFB",
+      "payloadBytes": 12288
+    },
+    {
+      "index": 8,
+      "logicalId": "0x1B",
+      "command": "0x9B",
+      "dataBank": "0x6D",
+      "filename": "From the Aqueous Star with Love - Z高达精修.nsf",
+      "nsfSha256": "A50D6C6D6F652BB19286ADF413112E4FB4EDA20B9BDE9608A53083764903CB2F",
+      "payloadBytes": 8192
+    },
+    {
+      "index": 9,
+      "logicalId": "0x1C",
+      "command": "0x9C",
+      "dataBank": "0x6E",
+      "filename": "It's Not Anime - zz高达精修.nsf",
+      "nsfSha256": "0F7C97A3935F021F25F70CECBD17BC1C3A60EED401AA99F71B79888B080B8F5B",
+      "payloadBytes": 16384
+    },
+    {
+      "index": 10,
+      "logicalId": "0x1D",
+      "command": "0xA0",
+      "dataBank": "0x6F",
+      "filename": "JUST COMMUNICATION - 高达EW精修.nsf",
+      "nsfSha256": "38EE5BEE3D74F94F8544C7BB6BABD848365C4F58C545733BCA0D257CA1A69042",
+      "payloadBytes": 8192
+    },
+    {
+      "index": 11,
+      "logicalId": "0x1E",
+      "command": "0xA1",
+      "dataBank": "0x70",
+      "filename": "Map Theme - 精修.nsf",
+      "nsfSha256": "B91967BC02D12213EFB2849A4AC85DD305FC07221408758AD9CE1EE78903DADB",
+      "payloadBytes": 8192
+    },
+    {
+      "index": 12,
+      "logicalId": "0x1F",
+      "command": "0xA2",
+      "dataBank": "0x71",
+      "filename": "Melua - 精修.nsf",
+      "nsfSha256": "053AD0FB587652D9959A067A1B68CF32A30B71899CF2D86F079DFA77EF96D990",
+      "payloadBytes": 8192
+    },
+    {
+      "index": 13,
+      "logicalId": "0x20",
+      "command": "0xA3",
+      "dataBank": "0x72",
+      "filename": "Moon Knights - 精修.nsf",
+      "nsfSha256": "6697A5A5973C5AD8B382A33E482774B1B2D47C4C2CA3EEFC77EEE95D50B8B7D9",
+      "payloadBytes": 8192
+    },
+    {
+      "index": 14,
+      "logicalId": "0x21",
+      "command": "0xA4",
+      "dataBank": "0x73",
+      "filename": "The Moon Dwellers - 机战J最终关精修.nsf",
+      "nsfSha256": "67054FDB1072E88B246248C44B49BF891AAF6367A9C6C185234C389C5CB6D209",
+      "payloadBytes": 8192
+    }
+  ]
+}

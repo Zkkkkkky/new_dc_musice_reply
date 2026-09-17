@@ -45,5 +45,7 @@
 
 - `dist/roms/新DC上.nes`：当前交付 ROM。
 - `dist/roms/新DC下.nes`：当前交付 ROM。
+- `dist/roms/新DC上_扩容15曲_未绑定.nes`：上版 1 MiB PRG、精修15曲未绑定交付 ROM。
+- `dist/roms/新DC下_扩容15曲_未绑定.nes`：下版 1 MiB PRG、精修15曲未绑定交付 ROM。
 - `assets/music/01 精修通用驱动（F000-F100-F160）/`：当前用于替换工作的版本化 NSF 音乐素材。
-- 当前仓库没有已归档的输入基线或正式源码；后续新增时必须按上述目录落位。
+- `tools/build_refined15_roms.py` 与 `src/asm/`：两份 15 曲 ROM 的正式可重建实现。

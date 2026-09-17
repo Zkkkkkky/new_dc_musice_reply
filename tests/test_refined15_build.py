@@ -20,11 +20,11 @@ BANK_SIZE = 0x2000
 CASES = {
     "新DC上": (
         "34A669879A1310045FBF15A916B86FBCDA765B3A1B39E799D5A76A16D03BB6EF",
-        "6BB65EC535E31D7CC752E03F520AEB25E328D132E59CC69CC7C72C4D45528945",
+        "B744688EF81853833FC0ADB44828C211F61E58F5ABF1DFFACE977B1AB5D647A5",
     ),
     "新DC下": (
         "C623BBA0AE07AE3226A2AF09B1EAB1E42DB36EE3D8865D3DB20D3BF657C38CEC",
-        "F917FBAB44032A0E427228F7AA2002A7148CADCF995134445C7CD03AE4BC79CB",
+        "6663C25FA692766F8EDADCC600152C98CDBCF57943B468A9172A36656F3CEA8E",
     ),
 }
 
@@ -94,6 +94,47 @@ class Refined15BuildTests(unittest.TestCase):
             [track["nsfSha256"] for track in records],
             [track["nsfSha256"] for track in manifest["tracks"]],
         )
+
+    def test_relocated_driver_avoids_game_pointer_and_mapper_registers(self) -> None:
+        _, shared_driver, _ = builder.read_tracks()
+        relocated, mapping = builder.relocate_driver(shared_driver)
+        self.assertEqual(
+            [mapping[address] for address in range(0x0294, 0x0298)],
+            [0x0468, 0x0469, 0x002A, 0x002B],
+        )
+        self.assertNotIn(0x0028, mapping.values())
+        self.assertNotIn(0x0029, mapping.values())
+        self.assertEqual(relocated.count(bytes.fromhex("9D F8 5F")), 0)
+        self.assertEqual(relocated.count(bytes.fromhex("9D F8 48")), 2)
+
+    def test_sfx_snapshot_conversion_keeps_complete_state(self) -> None:
+        source = bytearray(BANK_SIZE)
+        source[:4] = bytes.fromhex("04 80 04 80")
+        table_end = 4 + builder.SFX_COUNT * 2
+        for index in range(builder.SFX_COUNT):
+            source[4 + index * 2:6 + index * 2] = (
+                0x8000 + table_end
+            ).to_bytes(2, "little")
+        source[table_end:table_end + 10] = bytes.fromhex(
+            "80 11 81 22 02 80 33 03 00 00"
+        )
+
+        converted = builder.convert_sfx_to_snapshots(bytes(source))
+        pointer = int.from_bytes(converted[4:6], "little") - 0x8000
+        self.assertEqual(
+            converted[pointer:pointer + 13],
+            bytes.fromhex("02 02 00 11 01 22 03 02 00 33 01 22 00"),
+        )
+
+    def test_bounded_sfx_bank_is_locked(self) -> None:
+        for label in CASES:
+            output = (
+                ROOT / "dist" / "roms" / f"{label}_扩容15曲_未绑定.nes"
+            ).read_bytes()
+            self.assertEqual(
+                sha256(bank(output, builder.SFX_DATA_BANK)),
+                "5A9F41C54DB6A3FD8FE48358D110F141526D25406ABFA783DFE7816637BD0E41",
+            )
 
 
 if __name__ == "__main__":

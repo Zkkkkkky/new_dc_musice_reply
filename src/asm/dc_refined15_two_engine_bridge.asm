@@ -11,14 +11,12 @@ music_state   = $004d
 music_current = $0052
 music_limit   = $0053
 
-bridge_magic_a = $0468
-bridge_magic_b = $0469
 bridge_magic_c = $046a
 custom_state   = $046b
 
-sfx_progress_lo = $0054
-sfx_progress_hi = $0055
-sfx_repeat      = $0056
+sfx_stream_lo = $0054
+sfx_stream_hi = $0055
+sfx_repeat    = $0056
 
 mapper_select = $8000
 mapper_data   = $8001
@@ -34,12 +32,6 @@ dc_refined15_two_engine_bridge:
     ; A native-driver update can cross a video frame.  A nested NMI must only
     ; restore the interrupted mappings; it must not read transient $004C-$0053
     ; state or start a second update.
-    lda bridge_magic_a
-    cmp #$5a
-    bne @direct_selectors
-    lda bridge_magic_b
-    cmp #$a5
-    bne @direct_selectors
     lda bridge_magic_c
     cmp #$d3
     beq @launch_native
@@ -69,12 +61,6 @@ dc_refined15_two_engine_bridge:
     sta music_command
 
 @check_active:
-    lda bridge_magic_a
-    cmp #$5a
-    bne @stock_update
-    lda bridge_magic_b
-    cmp #$a5
-    bne @stock_update
     lda bridge_magic_c
     cmp #$c3
     bne @stock_update
@@ -100,16 +86,16 @@ dc_refined15_two_engine_bridge:
     txa
     bmi @leave_with_stock_command
 
-    ; The relocated refined driver owns music, but a compact one-stream SFX
-    ; overlay replays the migrated 56-effect data after each music update.
-    ; $53 remains the original priority/effect byte; $54-$56 hold only overlay
-    ; progress while a refined song is active.
+    ; The relocated refined driver owns music, while a bounded one-stream SFX
+    ; overlay applies the migrated 56-effect snapshots after each music update.
+    ; $53 remains the original priority/effect byte; $54-$56 hold the current
+    ; snapshot pointer and its remaining duration.
     cmp #$38
     bcs @native_update
     sta music_limit
     lda #$00
-    sta sfx_progress_lo
-    sta sfx_progress_hi
+    sta sfx_stream_lo
+    sta sfx_stream_hi
     sta sfx_repeat
     jmp @native_update
 
@@ -137,8 +123,6 @@ dc_refined15_two_engine_bridge:
 @handoff_command_ready:
     tax
     lda #$00
-    sta bridge_magic_a
-    sta bridge_magic_b
     sta bridge_magic_c
     sta custom_state
     jsr @restore_stock_low_bank
@@ -165,18 +149,14 @@ dc_refined15_two_engine_bridge:
     lda #$ff
     sta music_limit
     lda #$00
-    sta sfx_progress_lo
-    sta sfx_progress_hi
+    sta sfx_stream_lo
+    sta sfx_stream_hi
     sta sfx_repeat
     lda #$fe
     sta music_command
     jmp @launch_native
 
 @set_magic:
-    lda #$5a
-    sta bridge_magic_a
-    lda #$a5
-    sta bridge_magic_b
     lda #$c3
     sta bridge_magic_c
     rts

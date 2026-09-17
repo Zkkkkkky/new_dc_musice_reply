@@ -104,6 +104,9 @@ TRAMPOLINE_BANK_OFFSET = TRAMPOLINE_CPU_ADDRESS - 0x8000
 HANDOFF_CPU_ADDRESS = 0x99EC
 HANDOFF_BANK_OFFSET = HANDOFF_CPU_ADDRESS - 0x8000
 FIXED_E000_AUDIO_OPERANDS = (0xFA84, 0xFADE)
+NSF_MAPPER_WRITE_OPERANDS = (0xF10C, 0xFC6B)
+SFX_COUNT = 0x38
+SFX_TABLE_CPU_ADDRESS = 0x8004
 
 ASM_STEMS = (
     "dc_dual_audio_trampoline",
@@ -116,9 +119,9 @@ ASM_STEMS = (
 ASM_EXPECTED = {
     "dc_dual_audio_trampoline": (29, "06D56D2CD5BD8194EA08C3741470D726E8A498F12A642F6A6A113A8B7C899932"),
     "dc_refined15_audio_handoff": (77, "8038D75F560118EA7921C9335C8A73222F3EE6B4EBF22A4408D32D8BF883E9B2"),
-    "dc_refined15_two_engine_bridge": (252, "B4A5B0427B562CA1938B541A6D8BD9EFCA25A76F0B52C60FBD6F184234836684"),
+    "dc_refined15_two_engine_bridge": (208, "AD26413D706C91CCD3F9D536D6D2A6D91399DF3C0E258A1575CC6296DCF74EFB"),
     "dc_refined15_dispatcher": (45, "0F6C022A7F4BB5F8EFE018ACCC4F6DF0917A3E09C5D763DCECDACB669EF3A85E"),
-    "dc_refined15_native_wrapper": (398, "D8090547A76C1F74C2A4EC393BBB0964BA05931FC6B8E6A9DA978400E1080532"),
+    "dc_refined15_native_wrapper": (365, "A8E77BDB6BBD0B6F80DC14168C6194AF3BED5B3B0D8286A6FF07CD6AD1231E80"),
     "dc_refined15_sfx_bank": (BANK_SIZE, "9E51C2205004DD457D10C701663CB8B31D61A38B978D8776B088306FCAEB66E5"),
 }
 
@@ -177,10 +180,13 @@ BSS_BLOCK_LAYOUT = (
     (0x0292, 0x0294, 0x004A),
 
     # The remaining small arrays fit the two other certified zero-page holes
-    # and the four bytes above the bridge-state guard.
+    # and the bytes around the two-byte bridge-state guard.  $0294-$0295 must
+    # not live at $0028-$0029: the fixed game dispatcher uses those two bytes
+    # as an indirect bank pointer on every audio update.
     (0x028F, 0x0292, 0x0057),
     (0x02A0, 0x02A4, 0x005A),
-    (0x0294, 0x0298, 0x0028),
+    (0x0294, 0x0296, 0x0468),
+    (0x0296, 0x0298, 0x002A),
     (0x0299, 0x029D, 0x046C),
 )
 
@@ -316,14 +322,13 @@ def bss_mapping() -> dict[int, int]:
         if address not in REMOVED_BSS
     }
     expected_physical = {
-        address
-        for address in range(0x0028, 0x005E)
-        if address != 0x002C and not 0x004C <= address <= 0x0056
+        address for address in range(0x002A, 0x004C) if address != 0x002C
     }
+    expected_physical.update(range(0x0057, 0x005E))
     expected_physical.update(
         address
         for address in range(0x0400, 0x0470)
-        if not 0x0468 <= address <= 0x046B
+        if not 0x046A <= address <= 0x046B
     )
     if set(mapping) != expected_logical:
         raise AssertionError(
@@ -397,6 +402,16 @@ def relocate_driver(driver: bytes) -> tuple[bytes, dict[int, int]]:
         if relocated[offset:offset + 2] != b"\xE0\x05":
             raise AssertionError(f"Unexpected CPX at ${pc:04X}")
         relocated[offset + 1] = 0x04
+
+    # The NSF export contains two mapper setup writes (STA $5FF8,X).  Mapper
+    # 194 decodes that address as a PRG register on FCEUX, so an unlucky update
+    # can replace the currently executing bank.  Redirect both writes to the
+    # unused $48F8 mirror while preserving the three-byte instruction shape.
+    for pc in NSF_MAPPER_WRITE_OPERANDS:
+        offset = pc - DRIVER_BASE
+        if relocated[offset:offset + 3] != bytes.fromhex("9D F8 5F"):
+            raise AssertionError(f"Unexpected mapper write at ${pc:04X}")
+        relocated[offset + 2] = 0x48
 
     # The song record still contains five two-byte channel pointers.  Process
     # only the four tonal channels, then skip the unused DMC pointer before
@@ -487,6 +502,96 @@ def source_bank(source: bytes, bank: int) -> bytes:
         raise ValueError(f"Invalid source bank ${bank:02X}")
     start = bank_offset(bank)
     return source[start:start + BANK_SIZE]
+
+
+def convert_sfx_to_snapshots(source: bytes) -> bytes:
+    """Convert the generated FamiStudio SFX streams to bounded snapshots.
+
+    The legacy compact stream stores only register deltas followed by a frame
+    duration.  Replaying the entire consumed prefix every frame makes old
+    effects progressively more expensive.  The converted record stores the
+    complete live register state at every duration boundary instead:
+
+        duration, register_count, (register_index, value) * count
+
+    A zero duration terminates an effect.  This keeps runtime work bounded by
+    the number of active APU registers, independent of the effect's age.
+    """
+    if len(source) != BANK_SIZE:
+        raise ValueError(f"Unexpected SFX bank size: {len(source)}")
+    if source[:4] != SFX_TABLE_CPU_ADDRESS.to_bytes(2, "little") * 2:
+        raise ValueError("Unexpected FamiStudio SFX table header")
+
+    table_offset = SFX_TABLE_CPU_ADDRESS - 0x8000
+    pointers = [
+        int.from_bytes(source[table_offset + index * 2:table_offset + index * 2 + 2], "little")
+        for index in range(SFX_COUNT)
+    ]
+    if any(not 0x8000 <= pointer < 0xA000 for pointer in pointers):
+        raise ValueError("SFX table pointer is outside bank $77")
+
+    converted_effects: list[bytes] = []
+    max_registers = 0
+    for effect_index, pointer in enumerate(pointers):
+        cursor = pointer - 0x8000
+        state: dict[int, int] = {}
+        records: list[tuple[int, tuple[tuple[int, int], ...]]] = []
+        dirty = False
+        for _ in range(BANK_SIZE):
+            if cursor >= BANK_SIZE:
+                raise ValueError(f"SFX ${effect_index:02X} runs past bank end")
+            token = source[cursor]
+            cursor += 1
+            if token == 0:
+                # Preserve a final write that is immediately followed by the
+                # terminator: it was audible for the last update in the legacy
+                # interpreter even though no explicit wait follows it.
+                if dirty:
+                    records.append((1, tuple(sorted(state.items()))))
+                break
+            if token < 0x80:
+                snapshot = tuple(sorted(state.items()))
+                records.append((token, snapshot))
+                max_registers = max(max_registers, len(snapshot))
+                dirty = False
+                continue
+            register = token & 0x7F
+            if register > 0x0A or cursor >= BANK_SIZE:
+                raise ValueError(
+                    f"Invalid SFX token ${token:02X} in effect ${effect_index:02X}"
+                )
+            state[register] = source[cursor]
+            cursor += 1
+            dirty = True
+        else:
+            raise ValueError(f"SFX ${effect_index:02X} has no terminator")
+
+        payload = bytearray()
+        for duration, snapshot in records:
+            payload.extend((duration, len(snapshot)))
+            for register, value in snapshot:
+                payload.extend((register, value))
+        payload.append(0)
+        converted_effects.append(bytes(payload))
+
+    table_end = table_offset + SFX_COUNT * 2
+    output = bytearray(source[:table_offset])
+    output.extend(bytes(SFX_COUNT * 2))
+    for index, payload in enumerate(converted_effects):
+        pointer = 0x8000 + len(output)
+        if pointer + len(payload) > 0xA000:
+            raise ValueError("Snapshot SFX data no longer fits bank $77")
+        entry = table_offset + index * 2
+        output[entry:entry + 2] = pointer.to_bytes(2, "little")
+        output.extend(payload)
+    if len(output) < table_end:
+        raise AssertionError("Snapshot table was truncated")
+    output.extend(bytes(BANK_SIZE - len(output)))
+    if len(output) != BANK_SIZE:
+        raise AssertionError(f"Unexpected converted SFX size: {len(output)}")
+    if max_registers > 0x0B:
+        raise AssertionError(f"Too many SFX registers in a snapshot: {max_registers}")
+    return bytes(output)
 
 
 def validate_source(source: bytes, expected_hash: str) -> None:
@@ -587,7 +692,7 @@ def build_one(
     bridge_bank = bytearray(BANK_SIZE)
     bridge_bank[0x1500:0x1500 + len(bridge)] = bridge
     patch_bank(image, FAMISTUDIO_ENGINE_BANK, bytes(bridge_bank))
-    patch_bank(image, SFX_DATA_BANK, assembled["dc_refined15_sfx_bank"])
+    patch_bank(image, SFX_DATA_BANK, assembled["dc_refined15_sfx_snapshots"])
 
     result = bytes(image)
     validate_output(source, result, assembled)
@@ -686,9 +791,11 @@ def mapping_text(records: list[dict[str, object]]) -> str:
             "- $60：原音频 Bank 的扩容副本与桥接入口；$61-$63：清空。",
             "- $64：双引擎桥接代码；不存在旧版第三套音乐引擎。",
             "- $65-$73：15首曲目数据；$74/$75：重定位驱动；$76：Bank切换跳板。",
-            "- $77：迁移后的56个原版音效；$78-$7D：保留空白。",
+            "- $77：迁移后的56个原版音效（每帧固定成本快照）；$78-$7D：保留空白。",
             "- $7E/$7F：扩容后的固定 Bank 副本；1 MiB PRG 后是原 CHR 的活动副本。",
-            "- 新曲播放时由轻量音效叠加器继续播放 $00-$37 原版音效。",
+            "- 新曲播放时由有界音效叠加器继续播放 $00-$37 原版音效；回放成本不随音效时长增长。",
+            "- 重定位驱动的两个 NSF $5FF8 写入已改到无效镜像 $48F8，避免 Mapper 194 误换 PRG。",
+            "- 驱动逻辑变量 $0294-$0295 映射至 $0468-$0469，避开游戏每帧使用的 $0028-$0029。",
             "- 精修驱动带嵌套 NMI 映射恢复保护，入口为 $B100/$B160。",
             "- 交还原引擎前写 $27 到 $5000，清除 FCEUX 的 KT-008 高位锁存器。",
             "",
@@ -734,6 +841,9 @@ def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     asm6 = resolve_asm6(args.asm6)
     assembled = assemble(asm6, BUILD_DIR / "asm")
+    assembled["dc_refined15_sfx_snapshots"] = convert_sfx_to_snapshots(
+        assembled["dc_refined15_sfx_bank"]
+    )
     records, shared_driver, anime_chunk = read_tracks()
     relocated_driver, mapping = relocate_driver(shared_driver)
     if anime_chunk is None:
@@ -808,13 +918,13 @@ def main(argv: list[str] | None = None) -> None:
             "sourceBss": "$0200-$02A3 (164 bytes)",
             "removedDmcOrFifthChannelBytes": [f"0x{address:04X}" for address in sorted(REMOVED_BSS)],
             "persistentBytes": len(mapping),
-            "persistentTargets": "$0028-$005D except $002C/$004C-$0056; $0400-$046F except $0468-$046B",
+            "persistentTargets": "$002A-$004B except $002C; $0057-$005D; $0400-$046F except $046A-$046B",
             "transientScratch": "$004C-$0053, saved/restored around every native-driver call",
         },
         "compatibility": {
             "originalAddressBodyPreserved": True,
             "fceuxKt008LatchClear": "STA $5000 with A=$27 before handoff",
-            "nativeSfxPolicy": "compact 56-effect overlay while refined music owns APU",
+            "nativeSfxPolicy": "bounded 56-effect snapshots while refined music owns APU",
             "targetEmulators": ["Mesen 0.9.9", "FCEUX 2.6.6"],
         },
     }

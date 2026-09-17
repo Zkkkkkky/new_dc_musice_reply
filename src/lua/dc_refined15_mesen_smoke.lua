@@ -46,8 +46,6 @@ local native_return_hits = 0
 local native_init_rts_hits = 0
 local native_after_init_hits = 0
 local init_milestones = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-local native_bridge_state_writes = 0
-local native_bridge_state_pc = 0
 local two_engine = nil
 
 local hold_custom = false
@@ -55,9 +53,7 @@ local allowed_command = -1
 
 local function valid_magic()
     local magic_c = read_byte(0x046A)
-    return read_byte(0x0468) == 0x5A and
-           read_byte(0x0469) == 0xA5 and
-           (magic_c == 0xC3 or magic_c == 0xD3 or magic_c == 0xD4)
+    return magic_c == 0xC3 or magic_c == 0xD3 or magic_c == 0xD4
 end
 
 local function native_state()
@@ -171,7 +167,7 @@ emu.addMemoryCallback(function()
     if native_state() then
         native_sfx_apu_writes = native_sfx_apu_writes + 1
     end
-end, emu.memCallbackType.cpuExec, 0xBE74, 0xBE74)
+end, emu.memCallbackType.cpuExec, 0xBE4D, 0xBE4D)
 
 local function native_pc()
     local offset = prg_offset(0xB000)
@@ -190,13 +186,6 @@ end, emu.memCallbackType.cpuWrite, 0x0200, 0x02A3)
 emu.addMemoryCallback(function()
     if native_pc() then unsafe_old_zp_writes = unsafe_old_zp_writes + 1 end
 end, emu.memCallbackType.cpuWrite, 0x0000, 0x0007)
-
-emu.addMemoryCallback(function()
-    if native_pc() then
-        native_bridge_state_writes = native_bridge_state_writes + 1
-        if native_bridge_state_pc == 0 then native_bridge_state_pc = emu.getState().cpu.pc end
-    end
-end, emu.memCallbackType.cpuWrite, 0x0468, 0x046B)
 
 local function dmc_hit()
     if native_state() then dmc_handler_hits = dmc_handler_hits + 1 end
@@ -226,6 +215,10 @@ local function fail(code)
     emu.stop(code)
 end
 
+local function pass()
+    emu.stop(0)
+end
+
 local function start_track(index)
     track_index = index
     before_init = native_init_hits
@@ -234,7 +227,7 @@ local function start_track(index)
     before_bridge = bridge_hits
     allowed_command = commands[index]
     write_byte(0x004C, commands[index])
-    deadline = frame + 1200
+    deadline = frame + 240
     phase = "native"
 end
 
@@ -252,8 +245,6 @@ emu.addEventCallback(function()
             if bridge_hits == before_bridge then return fail(200 + track_index) end
             return fail(read_byte(0x046B))
         end
-        if read_byte(0x0468) ~= 0x5A then return fail(81) end
-        if read_byte(0x0469) ~= 0xA5 then return fail(82) end
         if read_byte(0x046A) ~= 0xC3 and read_byte(0x046A) ~= 0xD3 then
             return fail(83)
         end
@@ -300,11 +291,9 @@ emu.addEventCallback(function()
         -- $81 must now hand off to the stock engine for the restored Getter song.
         write_byte(0x004C, 0x81)
         phase = "stock-handoff"
-        deadline = frame + 1200
+        deadline = frame + 240
     elseif phase == "stock-handoff" then
-        if stock_hits <= before_stock or
-           (read_byte(0x0468) == 0x5A and read_byte(0x0469) == 0xA5 and
-            read_byte(0x046A) == 0xC3) then
+        if stock_hits <= before_stock or read_byte(0x046A) == 0xC3 then
             return fail(43)
         end
         hold_custom = true
@@ -342,7 +331,7 @@ emu.addEventCallback(function()
             write_byte(0x004C, allowed_command)
             deadline = frame + 180
         else
-            emu.stop(0)
+            pass()
         end
     elseif phase == "famistudio" then
         if read_byte(0x046B) ~= 0x9D or
@@ -350,6 +339,6 @@ emu.addEventCallback(function()
            fami_apu_writes <= before_fami_apu or mapping_errors ~= 0 then
             return fail(44)
         end
-        emu.stop(0)
+        pass()
     end
 end, emu.eventType.endFrame)

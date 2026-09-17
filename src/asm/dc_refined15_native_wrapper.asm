@@ -16,9 +16,9 @@ sfx_data_bank = $77
 sfx_table = $8004
 native_return_dispatch = $9a04
 
-sfx_progress_lo = $0054
-sfx_progress_hi = $0055
-sfx_repeat = $0056
+sfx_stream_lo = $0054
+sfx_stream_hi = $0055
+sfx_repeat    = $0056
 
 native_update_entry:
     jmp native_update_impl
@@ -159,12 +159,15 @@ map_native_data:
     stx mapper_data
     rts
 
-; Compact overlay for the 56 migrated stock effects.  The stream format is
-; FamiStudio's simple SFX bytecode: $80-$8A write one of the 11 tonal APU
-; values, $01-$7F wait, and $00 ends the effect.  Only four persistent bytes
-; are needed ($53-$56).  Instead of keeping an 11-byte mix buffer, replay the
-; already-consumed prefix after the music update; the last write to each APU
-; register reconstructs the current effect state.
+; Bounded overlay for the 56 migrated stock effects. Bank $77 is converted at
+; build time into snapshot records:
+;
+;   duration, register_count, (register_index, value) * count
+;
+; Every record contains the complete active SFX register state. Re-reading a
+; record costs at most four APU writes for the current data set, independent
+; of the effect's age. This replaces the consumed-prefix replay whose cost
+; grew every frame and could starve the battle raster IRQ.
 native_sfx_update:
     lda $53
     cmp #$38
@@ -176,99 +179,70 @@ native_sfx_update:
     sta bridge_magic_c
     jsr map_sfx_data
 
+    lda sfx_stream_lo
+    ora sfx_stream_hi
+    bne @have_stream
     lda $53
     asl
     tay
     lda sfx_table,y
-    sta $4c
+    sta sfx_stream_lo
     iny
     lda sfx_table,y
+    sta sfx_stream_hi
+
+@have_stream:
+    lda sfx_stream_lo
+    sta $4c
+    lda sfx_stream_hi
     sta $4d
-
-    lda sfx_progress_lo
-    sta $4e
-    lda sfx_progress_hi
-    sta $4f
-
-; Replay the consumed prefix, ignoring wait bytes but restoring every explicit
-; register value after the refined music driver overwrote the APU this frame.
-@replay_check:
-    lda $4e
-    ora $4f
-    beq @at_current
-    jsr sfx_read_replay_byte
-    bmi @replay_register
-    jmp @replay_check
-@replay_register:
-    and #$7f
-    tax
-    jsr sfx_read_replay_byte
-    jsr sfx_write_register
-    jmp @replay_check
-
-@at_current:
-    lda sfx_repeat
-    beq @read_new
-    dec sfx_repeat
-    bne @done
-
-@read_new:
     ldy #$00
     lda ($4c),y
     beq @end_effect
-    bmi @new_register
-
+    ldx sfx_repeat
+    bne @duration_ready
     sta sfx_repeat
-    jsr sfx_advance_current
-    jmp @done
+@duration_ready:
+    iny
+    lda ($4c),y
+    sta $4e
+    iny
 
-@new_register:
-    and #$7f
+@write_snapshot:
+    lda $4e
+    beq @snapshot_done
+    lda ($4c),y
     tax
-    jsr sfx_advance_current
-    ldy #$00
+    iny
     lda ($4c),y
     jsr sfx_write_register
-    jsr sfx_advance_current
-    jmp @read_new
+    iny
+    dec $4e
+    jmp @write_snapshot
+
+@snapshot_done:
+    dec sfx_repeat
+    bne @done
+    tya
+    clc
+    adc $4c
+    sta sfx_stream_lo
+    lda $4d
+    adc #$00
+    sta sfx_stream_hi
+    jmp @done
 
 @end_effect:
     lda #$ff
     sta $53
+    lda #$00
+    sta sfx_stream_lo
+    sta sfx_stream_hi
+    sta sfx_repeat
 
 @done:
     lda #$d3
     sta bridge_magic_c
-    rts
-
-; Read one previously consumed byte, advance the stream pointer, and decrement
-; the 16-bit replay count in $4E/$4F.
-sfx_read_replay_byte:
-    ldy #$00
-    lda ($4c),y
-    pha
-    inc $4c
-    bne @pointer_ok
-    inc $4d
-@pointer_ok:
-    lda $4e
-    bne @low_ok
-    dec $4f
-@low_ok:
-    dec $4e
-    pla
-    rts
-
-; Advance both the live stream pointer and its persistent 16-bit progress.
-sfx_advance_current:
-    inc $4c
-    bne @pointer_ok
-    inc $4d
-@pointer_ok:
-    inc sfx_progress_lo
-    bne @progress_ok
-    inc sfx_progress_hi
-@progress_ok:
     rts
 
 ; X is a compact output-buffer index $00-$0A; A is the value.

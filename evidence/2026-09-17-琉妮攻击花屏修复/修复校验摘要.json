@@ -1,0 +1,39 @@
+{
+  "date": "2026-09-17",
+  "repair": "bounded-sfx-snapshots-plus-ram-and-mapper-hazards",
+  "outputs": [
+    {
+      "label": "新DC上",
+      "sourceSha256": "A4090E681D424CA3F4A6BFF7959E5A6F3C6FBF26A315FF15D095FB8B0870089F",
+      "outputSha256": "B297F83C7EF0E908F7C3B74F36FC8F86B615F78224735F6E92AB673B9CE989B5",
+      "changedBytes": 6396,
+      "oldAddressBodyPreserved": true,
+      "songDataBanksPreserved": true,
+      "activeChrPreserved": true
+    },
+    {
+      "label": "新DC下",
+      "sourceSha256": "FFA20E61D1A1969C97898023B18B147FE836E391219EF259271F4EAB39411422",
+      "outputSha256": "0E2F64456B2C0AAC97E3968C05BB75A1715108EB9A2DBFB112E782782D29BAAA",
+      "changedBytes": 6396,
+      "oldAddressBodyPreserved": true,
+      "songDataBanksPreserved": true,
+      "activeChrPreserved": true
+    }
+  ],
+  "fceux": {
+    "upperHistoricalFailureWindowsPassed": [0, 12, 27, 47, 48, 57, 67, 77, 78, 83, 117, 118, 119],
+    "upperKeyframeSha256": "99E3449B384D44AD5064BFB76E2A1DC22972A950CA0D6C62F271D0D0CFE3A550",
+    "maxBridgeCycles": 3905,
+    "upperTrackMatrix": "pass=true tracks=15 failures=0",
+    "lowerTrackMatrix": "pass=true tracks=15 failures=0"
+  },
+  "mesen099": {
+    "upperExitCode": 0,
+    "lowerExitCode": 0
+  },
+  "unitTests": {
+    "passed": 27,
+    "failed": 0
+  }
+}

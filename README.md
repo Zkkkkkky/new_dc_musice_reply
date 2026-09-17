@@ -19,3 +19,9 @@
 两份 15 曲扩容未绑定版已经完成。布局、命令表、FCEUX 兼容原理和修改器使用顺序见
 [`docs/扩容15曲实现与命令表.md`](docs/扩容15曲实现与命令表.md)，运行时证据见
 [`evidence/2026-09-17-扩容15曲/验证记录.md`](evidence/2026-09-17-扩容15曲/验证记录.md)。
+
+扩容 ROM 的标题图块请使用免 Python 的 [`dist/tools/扩容ROM标题编辑器.exe`](dist/tools/扩容ROM标题编辑器.exe)，它会根据 Header 定位活动 CHR，并可恢复 CT2 写入旧影子的修改。
+
+机体拼图等旧修改器功能优先使用 [`dist/tools/新DC扩容专用修改器/新DC扩容专用修改器.exe`](dist/tools/新DC扩容专用修改器/新DC扩容专用修改器.exe)，它直接读写扩容 ROM 的活动 CHR，保存后禁止再运行 CHR 同步工具。
+
+只有继续使用未打补丁、只会写旧 CHR 偏移的原修改器时，才在保存后使用免 Python 的 [`dist/tools/扩容ROM全CHR同步工具.exe`](dist/tools/扩容ROM全CHR同步工具.exe) 将完整 256 KiB 旧影子同步到活动 CHR。

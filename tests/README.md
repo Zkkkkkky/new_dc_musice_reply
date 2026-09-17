@@ -9,3 +9,9 @@ python -m unittest discover -s tests -v
 ```
 
 当前测试锁定两份源 ROM 与交付 ROM 的 SHA-256，并验证旧文件体、扩容布局、FCEUX 清锁代码和 15 曲命令表。
+
+`test_expanded_title_editor.py` 验证扩容/原版 CHR 偏移计算、NES 2bpp 往返编码、影子同步和“禁止覆盖源 ROM”规则。
+
+`test_expanded_chr_sync.py` 验证完整 256 KiB 旧 CHR 影子到活动 CHR 的单向同步、区域边界与源 ROM 保护。
+
+`test_legacy_modifier_expanded_chr.py` 验证旧修改器 CHR 常量补丁只改动每个 `imm32` 的必要字节，并对额外或错位常量拒绝输出。

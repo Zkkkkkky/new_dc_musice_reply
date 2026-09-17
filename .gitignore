@@ -1,0 +1,29 @@
+# Generated build products
+/build/
+/tmp/
+/.cache/
+
+# Local inputs; keep only the directory guidance
+/inputs/**
+!/inputs/README.md
+
+# Language and tool caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+# Emulator and editor state
+*.sav
+*.state
+*.fc0
+*.fc1
+*.bak
+*.tmp
+*~
+.vscode/
+.idea/
+
+# Uncurated logs belong outside Git; selected evidence may be force-added
+*.log
+

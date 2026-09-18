@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import hashlib
+import gzip
 import os
 from pathlib import Path
 import shutil
@@ -21,6 +22,7 @@ BUILT_LAUNCHER = BUILD_ROOT / "新DC扩容专用修改器.exe"
 DELIVERY_ROOT = ROOT / "dist" / "tools" / "新DC扩容专用修改器"
 DELIVERY_LAUNCHER = DELIVERY_ROOT / "新DC扩容专用修改器.exe"
 DELIVERY_ENGINE = DELIVERY_ROOT / "内部文件" / "修改器核心.exe"
+DELIVERY_ENGINE_BACKUP = DELIVERY_ROOT / "内部文件" / "修改器核心.已验证.gz"
 DELIVERY_README = DELIVERY_ROOT / "使用说明.md"
 DELIVERY_ZIP = ROOT / "dist" / "tools" / "新DC扩容专用修改器.zip"
 CONFIG_SOURCE = ROOT / "inputs" / "legacy_modifier" / "默认配置文件"
@@ -110,6 +112,15 @@ def main() -> None:
     DELIVERY_ENGINE.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(BUILT_LAUNCHER, DELIVERY_LAUNCHER)
     shutil.copyfile(ENGINE_SOURCE, DELIVERY_ENGINE)
+    with ENGINE_SOURCE.open("rb") as source, DELIVERY_ENGINE_BACKUP.open("wb") as raw_backup:
+        with gzip.GzipFile(
+            filename="修改器核心.exe",
+            mode="wb",
+            fileobj=raw_backup,
+            compresslevel=9,
+            mtime=0,
+        ) as compressed:
+            shutil.copyfileobj(source, compressed)
     shutil.copyfile(README_SOURCE, DELIVERY_README)
 
     # The legacy core resolves its data tables relative to the executable,
@@ -136,6 +147,11 @@ def main() -> None:
     print(
         f"engine:   {DELIVERY_ENGINE} | {DELIVERY_ENGINE.stat().st_size} | "
         f"{sha256(DELIVERY_ENGINE)}"
+    )
+    print(
+        f"recovery: {DELIVERY_ENGINE_BACKUP} | "
+        f"{DELIVERY_ENGINE_BACKUP.stat().st_size} | "
+        f"{sha256(DELIVERY_ENGINE_BACKUP)}"
     )
     print(
         f"zip:      {DELIVERY_ZIP} | {DELIVERY_ZIP.stat().st_size} | "

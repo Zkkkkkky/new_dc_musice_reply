@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import gzip
 from pathlib import Path
 import subprocess
 import tempfile
@@ -14,6 +15,7 @@ RECONCILER_SOURCE = ROOT / "src" / "modifier_launcher" / "ChrReconciler.cs"
 DELIVERY = ROOT / "dist" / "tools" / "新DC扩容专用修改器"
 LAUNCHER = DELIVERY / "新DC扩容专用修改器.exe"
 ENGINE = DELIVERY / "内部文件" / "修改器核心.exe"
+ENGINE_BACKUP = DELIVERY / "内部文件" / "修改器核心.已验证.gz"
 ROOT_CONFIG = DELIVERY / "默认配置文件"
 ENGINE_CONFIG = DELIVERY / "内部文件" / "默认配置文件"
 ARCHIVE = ROOT / "dist" / "tools" / "新DC扩容专用修改器.zip"
@@ -42,10 +44,44 @@ class ModifierSkipLauncherTests(unittest.TestCase):
         source = SOURCE.read_text(encoding="utf-8")
         self.assertIn(EXPECTED_ENGINE_SHA256, source)
 
-    def test_delivery_launcher_is_a_separate_small_pe(self) -> None:
+    def test_delivery_launcher_is_a_separate_pe(self) -> None:
         self.assertEqual(LAUNCHER.read_bytes()[:2], b"MZ")
         self.assertLess(LAUNCHER.stat().st_size, 100_000)
         self.assertNotEqual(sha256(LAUNCHER), sha256(ENGINE))
+
+    def test_recovery_archive_contains_the_audited_engine(self) -> None:
+        with gzip.open(ENGINE_BACKUP, "rb") as stream:
+            recovered = stream.read()
+        self.assertEqual(len(recovered), 5_701_632)
+        self.assertEqual(hashlib.sha256(recovered).hexdigest().upper(), EXPECTED_ENGINE_SHA256)
+
+    def test_launcher_recovers_without_running_a_changed_core(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_temp:
+            temp = Path(raw_temp)
+            internal = temp / "内部文件"
+            internal.mkdir()
+            changed_core = internal / "修改器核心.exe"
+            changed_core.write_bytes(b"changed core must not run")
+            (internal / ENGINE_BACKUP.name).write_bytes(ENGINE_BACKUP.read_bytes())
+
+            completed = subprocess.run(
+                [str(LAUNCHER), "--prepare-engine", str(temp)],
+                check=False,
+                timeout=30,
+            )
+            self.assertEqual(completed.returncode, 0)
+            self.assertEqual(changed_core.read_bytes(), b"changed core must not run")
+            recovered = internal / "修改器核心_自动恢复.exe"
+            self.assertEqual(sha256(recovered), EXPECTED_ENGINE_SHA256)
+
+            recovered.write_bytes(b"recovered core changed after use")
+            repeated = subprocess.run(
+                [str(LAUNCHER), "--prepare-engine", str(temp)],
+                check=False,
+                timeout=30,
+            )
+            self.assertEqual(repeated.returncode, 0)
+            self.assertEqual(sha256(recovered), EXPECTED_ENGINE_SHA256)
 
     def test_engine_has_an_identical_local_config_mirror(self) -> None:
         root_files = {
@@ -157,6 +193,7 @@ class ModifierSkipLauncherTests(unittest.TestCase):
         root = "新DC扩容专用修改器/"
         self.assertIn(root + "新DC扩容专用修改器.exe", names)
         self.assertIn(root + "内部文件/修改器核心.exe", names)
+        self.assertIn(root + "内部文件/修改器核心.已验证.gz", names)
         self.assertIn(root + "内部文件/默认配置文件/码表.ini", names)
         self.assertIn(root + "使用说明.md", names)
         forbidden = {".nes", ".cdl", ".deb", ".pdb"}

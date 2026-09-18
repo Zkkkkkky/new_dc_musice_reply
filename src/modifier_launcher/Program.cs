@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -29,6 +30,8 @@ namespace NewDcExpandedModifierLauncher
         private const int FileStableMilliseconds = 800;
         private const string LauncherTitle = "SRW2修改器V1.5";
         private const string MainTitlePrefix = "SRW2扩容版修改器V1.0";
+        private const string EngineBackupFileName = "修改器核心.已验证.gz";
+        private const string RecoveredEngineFileName = "修改器核心_自动恢复.exe";
         private const string ExpectedEngineSha256 =
             "4C7F2980CC780253050174C7A6E00A506C7D1EA29E74B90128BDA9ABD9335947";
 
@@ -151,11 +154,11 @@ namespace NewDcExpandedModifierLauncher
             Application.SetCompatibleTextRenderingDefault(false);
 
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string enginePath = Path.Combine(baseDirectory, "内部文件", "修改器核心.exe");
             try
             {
-                ValidateEngine(enginePath);
-                using (Process engine = StartEngineWithHiddenLauncher(enginePath, baseDirectory))
+                string enginePath = PrepareVerifiedEngine(baseDirectory);
+                string engineDirectory = Path.GetDirectoryName(enginePath);
+                using (Process engine = StartEngineWithHiddenLauncher(enginePath, engineDirectory))
                 {
                     try
                     {
@@ -186,6 +189,13 @@ namespace NewDcExpandedModifierLauncher
                     string.Equals(args[0], "--reconcile-copy", StringComparison.Ordinal))
                 {
                     ChrReconciler.ReconcileCopy(args[1], args[2], args[3]);
+                    return 0;
+                }
+                if (args.Length == 2 &&
+                    string.Equals(args[0], "--prepare-engine", StringComparison.Ordinal))
+                {
+                    string engine = PrepareVerifiedEngine(args[1]);
+                    ValidateEngine(engine);
                     return 0;
                 }
                 return 64;
@@ -595,17 +605,118 @@ namespace NewDcExpandedModifierLauncher
             return text.ToString();
         }
 
+        private static string PrepareVerifiedEngine(string baseDirectory)
+        {
+            string internalDirectory = Path.Combine(baseDirectory, "内部文件");
+            string primary = Path.Combine(internalDirectory, "修改器核心.exe");
+            if (HasExpectedEngineHash(primary))
+                return primary;
+
+            string backup = Path.Combine(internalDirectory, EngineBackupFileName);
+            if (!File.Exists(backup))
+            {
+                throw new FileNotFoundException(
+                    "内部修改器核心已变化，且缺少自动恢复包。\r\n" +
+                    "请重新解压完整工具包，不要只复制外层 EXE。",
+                    backup);
+            }
+
+            Directory.CreateDirectory(internalDirectory);
+            string recovered = Path.Combine(internalDirectory, RecoveredEngineFileName);
+            if (HasExpectedEngineHash(recovered))
+                return recovered;
+
+            string temporary = Path.Combine(
+                internalDirectory,
+                ".核心恢复-" + Guid.NewGuid().ToString("N") + ".tmp");
+            try
+            {
+                using (FileStream source = File.OpenRead(backup))
+                using (GZipStream gzip = new GZipStream(source, CompressionMode.Decompress))
+                using (FileStream destination = new FileStream(
+                    temporary,
+                    FileMode.CreateNew,
+                    FileAccess.Write,
+                    FileShare.None))
+                {
+                    gzip.CopyTo(destination);
+                    destination.Flush(true);
+                }
+
+                ValidateEngine(temporary);
+                try
+                {
+                    if (File.Exists(recovered))
+                        File.Replace(temporary, recovered, null);
+                    else
+                        File.Move(temporary, recovered);
+                }
+                catch (IOException)
+                {
+                    // A previous recovered core may still be running.  Keep that
+                    // file untouched and use a distinct verified copy this time.
+                    string uniqueRecovered = Path.Combine(
+                        internalDirectory,
+                        "修改器核心_自动恢复_" +
+                        DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".exe");
+                    File.Move(temporary, uniqueRecovered);
+                    recovered = uniqueRecovered;
+                }
+
+                ValidateEngine(recovered);
+                return recovered;
+            }
+            catch
+            {
+                try
+                {
+                    if (File.Exists(temporary))
+                        File.Delete(temporary);
+                }
+                catch
+                {
+                    // Preserve the original recovery error.
+                }
+                throw;
+            }
+        }
+
+        private static bool HasExpectedEngineHash(string path)
+        {
+            if (!File.Exists(path))
+                return false;
+            try
+            {
+                return string.Equals(
+                    ComputeSha256(path),
+                    ExpectedEngineSha256,
+                    StringComparison.OrdinalIgnoreCase);
+            }
+            catch (IOException)
+            {
+                return false;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
+        }
+
+        private static string ComputeSha256(string path)
+        {
+            using (SHA256 algorithm = SHA256.Create())
+            using (FileStream stream = File.OpenRead(path))
+            {
+                return BitConverter.ToString(algorithm.ComputeHash(stream)).Replace("-", "");
+            }
+        }
+
         private static void ValidateEngine(string path)
         {
             if (!File.Exists(path))
                 throw new FileNotFoundException("缺少内部修改器核心。", path);
 
-            string actual;
-            using (SHA256 algorithm = SHA256.Create())
-            using (FileStream stream = File.OpenRead(path))
-            {
-                actual = BitConverter.ToString(algorithm.ComputeHash(stream)).Replace("-", "");
-            }
+            string actual = ComputeSha256(path);
             if (!string.Equals(actual, ExpectedEngineSha256, StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidDataException(

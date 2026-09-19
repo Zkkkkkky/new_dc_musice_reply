@@ -16,7 +16,7 @@ python -m unittest discover -s tests -v
 
 `test_legacy_modifier_expanded_chr.py` 验证旧修改器 CHR 常量补丁只改动每个 `imm32` 的必要字节，并对额外或错位常量拒绝输出。
 
-`test_modifier_skip_launcher.py` 验证新入口的窗口匹配、三秒初始化延时、内部核心哈希锁定/自动恢复、便携 ZIP 边界，以及旧影子/活动 CHR 两种单边写入的差分同步。
+`test_modifier_skip_launcher.py` 验证新入口的窗口匹配、三秒初始化延时、1.5 秒双消息重试、60 秒超时清理、内部核心哈希锁定/自动恢复、便携 ZIP 边界，以及旧影子/活动 CHR 两种单边写入的差分同步。
 
 `test_expanded_dc_cipher.py` 验证原版/1 MiB PRG 扩容布局、加密态判定、Bank `$3F/$7F` 同步、仅 5/6 字节变更、逐字节往返和「禁止覆盖源 ROM」。
 

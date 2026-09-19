@@ -16,7 +16,7 @@
 
 `launch_legacy_modifier_expanded_chr_candidate.cmd` 在保留 `inputs/` 原件的前提下重建补丁 EXE，供维护和复核。已完成运行验收的唯一用户版位于 `dist/tools/新DC扩容专用修改器/`，只能用于 1 MiB PRG 扩容 ROM。
 
-`build_modifier_skip_launcher.py` 编译新DC扩容专用修改器的外层入口，打包已审计 CHR 补丁核心、确定性 gzip 恢复源和核心旁 INI/DAT 配置镜像，并生成不显示旧启动页、保存后自动协调双 CHR 副本的便携目录与 ZIP。
+`build_modifier_skip_launcher.py` 编译新DC扩容专用修改器的外层入口，打包已审计 CHR 补丁核心、确定性 gzip 恢复源和核心旁 INI/DAT 配置镜像，并生成可重试跳过旧启动页、失败不遗留隐藏核心、保存后自动协调双 CHR 副本的便携目录与 ZIP。
 
 `build_expanded_title_editor_exe.py` 使用固定版本 PyInstaller 生成无控制台、单文件 Windows EXE；运行生成的 EXE 不需要目标电脑安装 Python。
 构建依赖锁定在 `title_editor_packaging_requirements.txt`。

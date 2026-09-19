@@ -34,9 +34,20 @@ class ModifierSkipLauncherTests(unittest.TestCase):
         self.assertIn('LauncherTitle = "SRW2修改器V1.5"', source)
         self.assertIn('MainTitlePrefix = "SRW2扩容版修改器V1.0"', source)
         self.assertIn("LauncherButtonId = 110", source)
-        self.assertIn("TotalSeconds >= 3.0", source)
+        self.assertIn("LauncherReadyDelayMilliseconds = 3000", source)
         self.assertIn("ConcealLauncher", source)
         self.assertIn("-32000", source)
+
+    def test_startup_retries_and_cleans_up_a_stalled_legacy_core(self) -> None:
+        source = SOURCE.read_text(encoding="utf-8")
+        self.assertIn("LauncherClickRetryMilliseconds = 1500", source)
+        self.assertIn("MainWindowTimeoutSeconds = 60", source)
+        self.assertIn("IsWindowEnabled(enterButton)", source)
+        self.assertIn("WmCommand", source)
+        self.assertIn("(enterAttempts & 1) != 0", source)
+        self.assertIn("RestoreHiddenLauncher();", source)
+        self.assertIn("TerminateEngine(engine);", source)
+        self.assertNotIn("enterPosted = true", source)
 
     def test_delivery_locks_the_audited_engine(self) -> None:
         self.assertEqual(ENGINE.stat().st_size, 5_701_632)

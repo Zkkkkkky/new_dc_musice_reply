@@ -14,6 +14,7 @@ namespace NewDcExpandedModifierLauncher
     {
         private const int LauncherButtonId = 110;
         private const uint BmClick = 0x00F5;
+        private const uint WmCommand = 0x0111;
         private const int SwHide = 0;
         private const int SwShow = 5;
         private const int SwRestore = 9;
@@ -28,6 +29,9 @@ namespace NewDcExpandedModifierLauncher
         private const uint WmQuit = 0x0012;
         private const int FilePollMilliseconds = 250;
         private const int FileStableMilliseconds = 800;
+        private const int LauncherReadyDelayMilliseconds = 3000;
+        private const int LauncherClickRetryMilliseconds = 1500;
+        private const int MainWindowTimeoutSeconds = 60;
         private const string LauncherTitle = "SRW2修改器V1.5";
         private const string MainTitlePrefix = "SRW2扩容版修改器V1.0";
         private const string EngineBackupFileName = "修改器核心.已验证.gz";
@@ -93,6 +97,9 @@ namespace NewDcExpandedModifierLauncher
 
         [DllImport("user32.dll")]
         private static extern bool IsWindow(IntPtr hwnd);
+
+        [DllImport("user32.dll")]
+        private static extern bool IsWindowEnabled(IntPtr hwnd);
 
         [DllImport("user32.dll")]
         private static extern bool PostMessage(IntPtr hwnd, uint message, IntPtr wParam, IntPtr lParam);
@@ -164,6 +171,12 @@ namespace NewDcExpandedModifierLauncher
                     {
                         return EnterMainWindow(engine);
                     }
+                    catch
+                    {
+                        RestoreHiddenLauncher();
+                        TerminateEngine(engine);
+                        throw;
+                    }
                     finally
                     {
                         StopWindowHook();
@@ -208,8 +221,9 @@ namespace NewDcExpandedModifierLauncher
 
         private static int EnterMainWindow(Process engine)
         {
-            DateTime deadline = DateTime.UtcNow.AddSeconds(25);
-            bool enterPosted = false;
+            DateTime deadline = DateTime.UtcNow.AddSeconds(MainWindowTimeoutSeconds);
+            DateTime nextEnterAttemptUtc = DateTime.MinValue;
+            int enterAttempts = 0;
 
             while (DateTime.UtcNow < deadline)
             {
@@ -217,33 +231,55 @@ namespace NewDcExpandedModifierLauncher
                 if (engine.HasExited)
                     throw new InvalidOperationException("修改器核心在主界面出现前已经退出。");
 
-                if (!enterPosted)
+                IntPtr launcher = hiddenLauncher;
+                if (launcher == IntPtr.Zero || !IsWindow(launcher))
                 {
-                    IntPtr launcher = hiddenLauncher;
-                    if (launcher == IntPtr.Zero || !IsWindow(launcher))
-                    {
-                        launcher = FindWindowForProcess(
-                            engine.Id,
-                            delegate(IntPtr hwnd)
-                            {
-                                return string.Equals(
-                                    ReadWindowTitle(hwnd),
-                                    LauncherTitle,
-                                    StringComparison.Ordinal) &&
-                                    GetDlgItem(hwnd, LauncherButtonId) != IntPtr.Zero;
-                            });
-                    }
-                    if (launcher != IntPtr.Zero)
-                    {
-                        ConcealLauncher(launcher);
-                        if (launcherReadyUtc == DateTime.MinValue)
-                            launcherReadyUtc = DateTime.UtcNow;
-                        if ((DateTime.UtcNow - launcherReadyUtc).TotalSeconds >= 3.0)
+                    launcher = FindWindowForProcess(
+                        engine.Id,
+                        delegate(IntPtr hwnd)
                         {
-                            IntPtr enterButton = GetDlgItem(launcher, LauncherButtonId);
-                            if (!PostMessage(enterButton, BmClick, IntPtr.Zero, IntPtr.Zero))
+                            return string.Equals(
+                                ReadWindowTitle(hwnd),
+                                LauncherTitle,
+                                StringComparison.Ordinal) &&
+                                GetDlgItem(hwnd, LauncherButtonId) != IntPtr.Zero;
+                        });
+                }
+                if (launcher != IntPtr.Zero)
+                {
+                    ConcealLauncher(launcher);
+                    if (launcherReadyUtc == DateTime.MinValue)
+                        launcherReadyUtc = DateTime.UtcNow;
+                    bool readyLongEnough =
+                        (DateTime.UtcNow - launcherReadyUtc).TotalMilliseconds >=
+                        LauncherReadyDelayMilliseconds;
+                    if (readyLongEnough && DateTime.UtcNow >= nextEnterAttemptUtc)
+                    {
+                        IntPtr enterButton = GetDlgItem(launcher, LauncherButtonId);
+                        if (enterButton != IntPtr.Zero && IsWindowEnabled(enterButton))
+                        {
+                            enterAttempts++;
+                            bool posted;
+                            if ((enterAttempts & 1) != 0)
+                            {
+                                posted = PostMessage(
+                                    enterButton,
+                                    BmClick,
+                                    IntPtr.Zero,
+                                    IntPtr.Zero);
+                            }
+                            else
+                            {
+                                posted = PostMessage(
+                                    launcher,
+                                    WmCommand,
+                                    new IntPtr(LauncherButtonId),
+                                    enterButton);
+                            }
+                            if (!posted)
                                 throw new InvalidOperationException("无法触发旧启动页的进入按钮。");
-                            enterPosted = true;
+                            nextEnterAttemptUtc = DateTime.UtcNow.AddMilliseconds(
+                                LauncherClickRetryMilliseconds);
                         }
                     }
                 }
@@ -267,16 +303,42 @@ namespace NewDcExpandedModifierLauncher
                 Thread.Sleep(5);
             }
 
+            throw new TimeoutException(
+                "等待修改器主界面超时；已重试进入 " + enterAttempts +
+                " 次，隐藏的旧启动页已恢复并终止本次核心进程。");
+        }
+
+        private static void RestoreHiddenLauncher()
+        {
+            IntPtr launcher = hiddenLauncher;
+            if (launcher == IntPtr.Zero || !IsWindow(launcher))
+                return;
+            SetWindowPos(
+                launcher,
+                IntPtr.Zero,
+                100,
+                100,
+                0,
+                0,
+                SwpNoSize | SwpNoActivate | SwpNoOwnerZOrder);
+            ShowWindow(launcher, SwRestore);
+            ShowWindow(launcher, SwShow);
+        }
+
+        private static void TerminateEngine(Process engine)
+        {
             try
             {
                 if (!engine.HasExited)
+                {
                     engine.Kill();
+                    engine.WaitForExit(5000);
+                }
             }
             catch
             {
-                // The timeout error below is more useful than a cleanup error.
+                // The startup error is more useful than a secondary cleanup error.
             }
-            throw new TimeoutException("等待修改器主界面超时；隐藏的旧启动页已终止。");
         }
 
         private static int MonitorRomSaves(Process engine, IntPtr mainWindow)

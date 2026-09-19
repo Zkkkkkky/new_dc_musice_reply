@@ -7,3 +7,4 @@
 - `title_editor/`：根据 iNES Header 定位活动 CHR、并同步扩容影子的标题图块编辑器。
 - `chr_sync/`：将旧修改器写入的完整 256 KiB CHR 影子安全同步到扩容 ROM 活动 CHR；包含 Python/Tkinter 可审计源码与免 Python 的 C# WinForms 实现。
 - `modifier_launcher/`：扩容专用旧修改器的可审计 C# 入口；校验/自动恢复内部核心、跳过旧启动页，并在保存后差分协调旧 CHR 影子与活动 CHR。
+- `dc_cipher/`：旧 DC 固定偏移加密/解密逻辑的严格校验实现；扩容版同步原始 Bank `$3F` 与运行时 Bank `$7F`。

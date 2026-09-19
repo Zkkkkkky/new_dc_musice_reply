@@ -1,0 +1,20 @@
+{
+  "source": "D:\\LLM\\项目\\替换音乐新项目\\dist\\roms\\新DC上_扩容15曲_音频时序修复.nes",
+  "status": "passed",
+  "expanded": true,
+  "sourceState": "decrypted",
+  "encryptedState": "encrypted",
+  "decryptedState": "decrypted",
+  "changedOffsets": [
+    "0x4012",
+    "0x4013",
+    "0x401E",
+    "0x401F",
+    "0x7F4C8",
+    "0xFF4C8"
+  ],
+  "sourceSha256": "B297F83C7EF0E908F7C3B74F36FC8F86B615F78224735F6E92AB673B9CE989B5",
+  "encryptedSha256": "644951815A3847F888E90885285DA6823C21027AF50BC3F0E94F997B05246929",
+  "roundTripSha256": "B297F83C7EF0E908F7C3B74F36FC8F86B615F78224735F6E92AB673B9CE989B5",
+  "roundTripExact": true
+}

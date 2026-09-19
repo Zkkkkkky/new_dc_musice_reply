@@ -1,0 +1,5 @@
+MesenCE 2.2.1 --testRunner
+script=src/lua/dc_cipher_mesen_boot_smoke.lua
+frames=600
+result=pass
+exitCode=0

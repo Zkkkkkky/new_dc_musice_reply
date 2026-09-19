@@ -1,0 +1,20 @@
+{
+  "source": "dist\\roms\\新DC上_扩容15曲_未绑定.nes",
+  "status": "passed",
+  "expanded": true,
+  "sourceState": "decrypted",
+  "encryptedState": "encrypted",
+  "decryptedState": "decrypted",
+  "changedOffsets": [
+    "0x4012",
+    "0x4013",
+    "0x401E",
+    "0x401F",
+    "0x7F4C8",
+    "0xFF4C8"
+  ],
+  "sourceSha256": "B744688EF81853833FC0ADB44828C211F61E58F5ABF1DFFACE977B1AB5D647A5",
+  "encryptedSha256": "185C23451F39CCBDA14C3E929539D048EF0794A53BEC9E5609E238BA80FD4CFA",
+  "roundTripSha256": "B744688EF81853833FC0ADB44828C211F61E58F5ABF1DFFACE977B1AB5D647A5",
+  "roundTripExact": true
+}

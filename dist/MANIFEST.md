@@ -1,6 +1,6 @@
 # 交付物清单
 
-更新日期：2026-09-18
+更新日期：2026-09-19
 
 | 文件 | 大小（字节） | SHA-256 | 说明 |
 | --- | ---: | --- | --- |
@@ -9,10 +9,12 @@
 | `roms/新DC上_扩容15曲_未绑定.nes` | 1310736 | `B744688EF81853833FC0ADB44828C211F61E58F5ABF1DFFACE977B1AB5D647A5` | 上版：1 MiB PRG、原版20曲＋精修15曲；含有界音效、RAM与NSF Mapper隐患修复，未绑定角色/地图 |
 | `roms/新DC下_扩容15曲_未绑定.nes` | 1310736 | `6663C25FA692766F8EDADCC600152C98CDBCF57943B468A9172A36656F3CEA8E` | 下版：1 MiB PRG、原版20曲＋精修15曲；含有界音效、RAM与NSF Mapper隐患修复，未绑定角色/地图 |
 | `roms/新DC上_扩容15曲_音频时序修复.nes` | 1310736 | `B297F83C7EF0E908F7C3B74F36FC8F86B615F78224735F6E92AB673B9CE989B5` | 保留用户上版原PRG、旧/活动CHR和15曲数据，仅修复扩容音频运行时；琉妮攻击13个历史故障相位通过 |
+| `roms/新DC上_扩容15曲_音频时序修复_已加密.nes` | 1310736 | `644951815A3847F888E90885285DA6823C21027AF50BC3F0E94F997B05246929` | 上版音频时序修复 ROM 的扩容同步加密态；Bank `$3F/$7F` 选择字节已同步，已通过 EXE 往返一致性验证 |
 | `roms/新DC下_扩容15曲_音频时序修复.nes` | 1310736 | `0E2F64456B2C0AAC97E3968C05BB75A1715108EB9A2DBFB112E782782D29BAAA` | 保留用户下版原PRG、旧/活动CHR和15曲数据，仅修复扩容音频运行时；双模拟器15曲矩阵通过 |
 | `roms/新DC_刚达机体拼图已生效_验证版.nes` | 1310736 | `7FC4889991BAE2F99308AECFC12A98F10413F6E0F675D0415D4B95607DEF8015` | 用户修改的刚达 `$09` 机体拼图；旧/活动 CHR 已同步，FCEUX 战斗画面已验证生效 |
 | `roms/新DC上_扩容15曲_未绑定 - 副本.nes` | 1310736 | `C064C18A08242403BE49F0F1583DC165EFFF5444AA48C7D5AF23C64832E5D31B` | 用户实验副本：相对正式上版仅将 `$D052` 从 `$86` 改为 `$9A`；尚未进行模拟器验收 |
 | `tools/扩容ROM标题编辑器.exe` | 13479355 | `76AD83F909BB7F8BA5E12866BDBC844DB425B87C7BC7DE900EA95B6112E1565E` | 免安装 Python 的 Windows x64 单文件版，已包含 Python 3.14 与 Tkinter |
+| `tools/扩容ROM加密解密工具.exe` | 13471512 | `3B565E481CCA815B07BC1317AA37B99797A2BF6C9665F4CE01401A814C926617` | 免安装 Python 的 Windows x64 单文件版；严格校验 Mapper 194 布局，扩容版同步 Bank `$3F/$7F`，强制另存 |
 | `tools/扩容ROM标题编辑器.zip` | 11702 | `DB58988F6DA686AA5992DEC23BA93A393769F4B81CD835B3E195C66AB5D4B953` | 可分发的源码版扩容 ROM 标题 CHR 编辑器，含启动器和使用说明 |
 | `tools/扩容ROM标题编辑器/expanded_title_editor.pyw` | 25027 | `891DBD164750243159B2F326D34925A6C9EBFDB0CCF50F34A3560B2973971230` | 可双击启动的 Windows Tkinter 标题编辑器主程序 |
 | `tools/扩容ROM标题编辑器/core.py` | 9972 | `141DA2F7C1E5165DABCC667C5ED3CD55CFF7BDE312AAA291DCAC008516DC6D4E` | iNES 布局解析、NES 2bpp 编解码和安全另存核心 |

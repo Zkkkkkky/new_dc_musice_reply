@@ -20,3 +20,6 @@
 
 `build_expanded_title_editor_exe.py` 使用固定版本 PyInstaller 生成无控制台、单文件 Windows EXE；运行生成的 EXE 不需要目标电脑安装 Python。
 构建依赖锁定在 `title_editor_packaging_requirements.txt`。
+
+`启动扩容ROM加密解密工具.cmd` 启动可审计源码版；`build_expanded_dc_cipher_exe.py` 生成免 Python 的单文件 Windows EXE。该工具严格校验 Mapper 194 布局，扩容版同步 `$07F4C8` 与 `$0FF4C8`，并禁止覆盖源 ROM。
+打包依赖锁定在 `dc_cipher_packaging_requirements.txt`。

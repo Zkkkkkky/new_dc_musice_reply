@@ -1,0 +1,4 @@
+interface:
+  display_name: "NSF Refined Common Driver"
+  short_description: "Convert compatible NES 2A03 NSF music to the approved common driver"
+  default_prompt: "Use $nsf-refined-common-driver to rewrite these NSF tracks for the ROM refined common driver and verify loops and frame-level fidelity."

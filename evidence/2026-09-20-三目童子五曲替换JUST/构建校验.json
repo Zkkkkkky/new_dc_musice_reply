@@ -1,0 +1,149 @@
+{
+  "format": "DC Mapper 194 Mitsume 5 replacing JUST COMMUNICATION v1",
+  "replaced": {
+    "command": "0xA0",
+    "logicalId": "0x1D",
+    "oldTitle": "JUST COMMUNICATION - 高达EW精修",
+    "oldDataBank": "0x6F",
+    "newTitle": "Stage 5-2"
+  },
+  "commands": {
+    "0xA0": "Stage 5-2",
+    "0xA7": "Stage 5-3",
+    "0xA8": "Boss Fight",
+    "0xA9": "Introduction",
+    "0xAA": "Ending (Epilogue)"
+  },
+  "commonDriverSha256": "20C0C421ADCE739DB24D8C9D445FB1FC6052C59668B3405967156833F402D431",
+  "tracks": [
+    {
+      "title": "Stage 5-2",
+      "filename": "三目童子 - Stage 5-2（精修通用驱动版）.nsf",
+      "command": 160,
+      "logicalId": 29,
+      "dataBank": 111,
+      "engineBank": 116,
+      "nsf": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\三目童子 - Stage 5-2（精修通用驱动版）.nsf",
+      "nsfBytes": 12416,
+      "nsfSha256": "17D852F5DA167E7F9687B112D4263E42E464C07C46B5AB526A375A7A69A6644E",
+      "payloadPages": 3,
+      "dataSha256": "025AF80153FB07BB4068F6205C34C7E18602BB942BA04704D90230E17FCBDC11",
+      "extraPageSha256": null
+    },
+    {
+      "title": "Stage 5-3",
+      "filename": "三目童子 - Stage 5-3（精修通用驱动版）.nsf",
+      "command": 167,
+      "logicalId": 36,
+      "dataBank": 121,
+      "engineBank": 116,
+      "nsf": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\三目童子 - Stage 5-3（精修通用驱动版）.nsf",
+      "nsfBytes": 8320,
+      "nsfSha256": "669166B5D4D64D3CE36CE9E58D8B359182B83E916EC0B3F5B10E8C06173BF8FD",
+      "payloadPages": 2,
+      "dataSha256": "22A2FA642FFACDAF4BBEA414668EF0C990ED83E9B25BCC3A29F848382588D90D",
+      "extraPageSha256": null
+    },
+    {
+      "title": "Boss Fight",
+      "filename": "三目童子 - Boss Fight（精修通用驱动版）.nsf",
+      "command": 168,
+      "logicalId": 37,
+      "dataBank": 122,
+      "engineBank": 123,
+      "nsf": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\三目童子 - Boss Fight（精修通用驱动版）.nsf",
+      "nsfBytes": 16512,
+      "nsfSha256": "76F55DD9FA5F4B0C36C044ABCDE9809D76CEAF45BCEAA62A9B5722AF6B9A9DD1",
+      "payloadPages": 4,
+      "dataSha256": "C8D49828E81B344F5D5741E473C8100276DC3380F6C794C16E8783FFD981D1DB",
+      "extraPageSha256": "2B6E41D90FC38993AAF6FB3B017410014FF76A95F8C9739A245B3B5A5D8A48E7"
+    },
+    {
+      "title": "Introduction",
+      "filename": "三目童子 - Introduction（精修通用驱动版）.nsf",
+      "command": 169,
+      "logicalId": 38,
+      "dataBank": 124,
+      "engineBank": 116,
+      "nsf": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\三目童子 - Introduction（精修通用驱动版）.nsf",
+      "nsfBytes": 8320,
+      "nsfSha256": "5DE23FC50928A7A6B5F1DC5A223E3208DE64D3C9494EC7E6B1870584CD3F5868",
+      "payloadPages": 2,
+      "dataSha256": "A9735D06D3AE1C5E7085ECB9B7487C5C96A17C30B2A36D69E08C1FD79CFB07DF",
+      "extraPageSha256": null
+    },
+    {
+      "title": "Ending (Epilogue)",
+      "filename": "三目童子 - Ending (Epilogue)（精修通用驱动版）.nsf",
+      "command": 170,
+      "logicalId": 39,
+      "dataBank": 125,
+      "engineBank": 116,
+      "nsf": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\三目童子 - Ending (Epilogue)（精修通用驱动版）.nsf",
+      "nsfBytes": 8320,
+      "nsfSha256": "2AFBB1C43350FE54A30CA82AB80756ACE7C646966A939208947804BB4D4C4F81",
+      "payloadPages": 2,
+      "dataSha256": "84411AE1834BE099932004031D8251B33C57607E3352A2DC5837B8B3C2677849",
+      "extraPageSha256": null
+    }
+  ],
+  "outputs": [
+    {
+      "variant": "upper",
+      "sourceBytes": 1310736,
+      "sourceSha256": "490DC9C24829827FB52918E1FF53431B047B3C04DE77BDFBCD1745411FE4CFFF",
+      "outputBytes": 1310736,
+      "outputSha256": "6D2B3435045FA646111155A29C2D206DA17694772961C85122036CAA37A0FF1D",
+      "changedBytes": 24833,
+      "preservedBank78": "empty",
+      "bridgeBytes": 223,
+      "bridgeSha256": "AD2100CD33195C7C6C8D0DFABF881F8E81F7BD6DB7EEF971FE43BBE01D3755EC",
+      "dispatcherBytes": 53,
+      "dispatcherSha256": "461AD1AD265EDE62E736769C5C75CCD18D77EEF7766FE9F63807592F1C49353D",
+      "dataMapperBytes": 82,
+      "dataMapperSha256": "0F7C8DC210FC1B7D2D6709E93A8950CDD92D43957684971338761632E114001C",
+      "preserved": [
+        "header and original PRG $00-$3F",
+        "CHR shadow $40-$5F and active CHR",
+        "stock audio copy $60",
+        "reserved empty banks $61-$63",
+        "existing refined data except replaced Bank $6F",
+        "It's Not Anime third page in Bank $75",
+        "SFX Bank $77",
+        "Bank $78 (empty upper / LAST IMPRESSION lower)",
+        "fixed-bank copies $7E-$7F"
+      ],
+      "buildPath": "D:\\LLM\\项目\\替换音乐新项目\\build\\mitsume5_roms\\新DC上_三目童子5曲_替换JUST.nes",
+      "distPath": "D:\\LLM\\项目\\替换音乐新项目\\dist\\roms\\新DC上_三目童子5曲_替换JUST.nes"
+    },
+    {
+      "variant": "lower",
+      "sourceBytes": 1310736,
+      "sourceSha256": "840E045A09A81CB8A9C58CA51FF9C0060F8E37826F25A58690EDAF598F1ED31C",
+      "outputBytes": 1310736,
+      "outputSha256": "EF2CA2468B478BD93B4F405CE7D83BBAE030CB2610300EE795FECB24C7DB7DE5",
+      "changedBytes": 24816,
+      "preservedBank78": "LAST IMPRESSION",
+      "bridgeBytes": 204,
+      "bridgeSha256": "790807898DDFBDC334D3CA17A958C4C000D3E9A96A1786588F58C167FBAB49B3",
+      "dispatcherBytes": 53,
+      "dispatcherSha256": "461AD1AD265EDE62E736769C5C75CCD18D77EEF7766FE9F63807592F1C49353D",
+      "dataMapperBytes": 82,
+      "dataMapperSha256": "0F7C8DC210FC1B7D2D6709E93A8950CDD92D43957684971338761632E114001C",
+      "preserved": [
+        "header and original PRG $00-$3F",
+        "CHR shadow $40-$5F and active CHR",
+        "stock audio copy $60",
+        "reserved empty banks $61-$63",
+        "existing refined data except replaced Bank $6F",
+        "It's Not Anime third page in Bank $75",
+        "SFX Bank $77",
+        "Bank $78 (empty upper / LAST IMPRESSION lower)",
+        "fixed-bank copies $7E-$7F"
+      ],
+      "buildPath": "D:\\LLM\\项目\\替换音乐新项目\\build\\mitsume5_roms\\新DC下_三目童子5曲_替换JUST.nes",
+      "distPath": "D:\\LLM\\项目\\替换音乐新项目\\dist\\roms\\新DC下_三目童子5曲_替换JUST.nes"
+    }
+  ],
+  "roleOrMapBindingsAdded": false
+}

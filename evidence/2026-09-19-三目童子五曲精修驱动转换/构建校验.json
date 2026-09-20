@@ -1,0 +1,386 @@
+{
+  "format": "Mitsume ga Tooru to refined F000/F100/F160 common driver v1",
+  "sourceSet": {
+    "commonBytes": 14388,
+    "selectorFileOffset": "$3831",
+    "selectorCpuAddress": "$B7B1",
+    "selectors": [
+      "$05",
+      "$06",
+      "$07",
+      "$08",
+      "$09"
+    ]
+  },
+  "referenceNsf": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\01 精修通用驱动（F000-F100-F160）\\JUST COMMUNICATION - 高达EW精修.nsf",
+  "referenceNsfSha256": "38EE5BEE3D74F94F8544C7BB6BABD848365C4F58C545733BCA0D257CA1A69042",
+  "commonDriverSha256": "20C0C421ADCE739DB24D8C9D445FB1FC6052C59668B3405967156833F402D431",
+  "famiStudio": "D:\\LLM\\项目\\音乐工程\\.tools\\FamiStudio453\\FamiStudio.exe",
+  "tracks": [
+    {
+      "source": "D:\\LLM\\项目\\音乐工程\\02 三目童子驱动（8000-B7B0-8000）\\03 三目童子 - 06 - Stage 5-2.nsf",
+      "sourceSha256": "2CFBC8079A8ADF29FD39886FEF190C4307AA9FBD6CD280DCBB136FE111122AA1",
+      "title": "Stage 5-2",
+      "sourceSelector": "$05",
+      "firstAudibleCall": 2,
+      "skippedSilentFrames": 1,
+      "importStartFrame": 0,
+      "leadingSilenceAdjustmentFrames": -1,
+      "oneShot": false,
+      "sourceLoopStartFrame": 25,
+      "sourceLoopEndFrame": 3289,
+      "sourceLoopLengthFrames": 3264,
+      "loopDetection": "exact-eventual-APU-period",
+      "patternFrames": 24,
+      "patternCount": 137,
+      "loopPattern": 1,
+      "project": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\projects\\Stage 5-2（精修通用驱动版）_FamiStudio.txt",
+      "projectSha256": "CC63FEA5D8C2BD6AD7A617EC04691500978429211D84A74A2F07DA7F5C32663C",
+      "nsf": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\三目童子 - Stage 5-2（精修通用驱动版）.nsf",
+      "nsfBytes": 12416,
+      "nsfSha256": "17D852F5DA167E7F9687B112D4263E42E464C07C46B5AB526A375A7A69A6644E",
+      "driverSha256": "20C0C421ADCE739DB24D8C9D445FB1FC6052C59668B3405967156833F402D431",
+      "apuStateComparedFrames": 6552,
+      "apuStateMismatchFrames": 0,
+      "sourceFidelity": {
+        "comparedFrames": 3288,
+        "sourceFrameRange": [
+          1,
+          3289
+        ],
+        "convertedFrameRange": [
+          0,
+          3288
+        ],
+        "pulse1": {
+          "frames": 3288,
+          "audibleFrames": 3002,
+          "onOffMismatchFrames": 0,
+          "dutyMismatchAudibleFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "pitchComparedFrames": 3002,
+          "sourceHardwareSweepFrames": 0,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "pulse2": {
+          "frames": 3288,
+          "audibleFrames": 3003,
+          "onOffMismatchFrames": 0,
+          "dutyMismatchAudibleFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "pitchComparedFrames": 3003,
+          "sourceHardwareSweepFrames": 0,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "triangle": {
+          "onOffMismatchFrames": 0,
+          "pitchComparedFrames": 2201,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "noise": {
+          "audibleFrames": 1804,
+          "onOffMismatchFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "periodMismatchAudibleFrames": 0
+        }
+      },
+      "importLog": "",
+      "exportLog": "Info: Sound engine code size: 4096 bytes.\n    Info: Song 'Stage 5-2' size: 4939 bytes.\n    Info: NSF export successful, final file size 12416 bytes."
+    },
+    {
+      "source": "D:\\LLM\\项目\\音乐工程\\02 三目童子驱动（8000-B7B0-8000）\\04 三目童子 - 07 - Stage 5-3.nsf",
+      "sourceSha256": "BB624FB9B177FFD0595A73552090D1C873A9227E1E418D68BE30651E3084E067",
+      "title": "Stage 5-3",
+      "sourceSelector": "$06",
+      "firstAudibleCall": 2,
+      "skippedSilentFrames": 1,
+      "importStartFrame": 1,
+      "leadingSilenceAdjustmentFrames": 0,
+      "oneShot": false,
+      "sourceLoopStartFrame": 640,
+      "sourceLoopEndFrame": 3200,
+      "sourceLoopLengthFrames": 2560,
+      "loopDetection": "exact-eventual-APU-period",
+      "patternFrames": 640,
+      "patternCount": 5,
+      "loopPattern": 1,
+      "project": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\projects\\Stage 5-3（精修通用驱动版）_FamiStudio.txt",
+      "projectSha256": "7DC689AEA8111019E9AC6721D19BFC340357DD8765399C5C1D9154F64699D1F4",
+      "nsf": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\三目童子 - Stage 5-3（精修通用驱动版）.nsf",
+      "nsfBytes": 8320,
+      "nsfSha256": "669166B5D4D64D3CE36CE9E58D8B359182B83E916EC0B3F5B10E8C06173BF8FD",
+      "driverSha256": "20C0C421ADCE739DB24D8C9D445FB1FC6052C59668B3405967156833F402D431",
+      "apuStateComparedFrames": 5760,
+      "apuStateMismatchFrames": 0,
+      "sourceFidelity": {
+        "comparedFrames": 3199,
+        "sourceFrameRange": [
+          1,
+          3200
+        ],
+        "convertedFrameRange": [
+          1,
+          3200
+        ],
+        "pulse1": {
+          "frames": 3199,
+          "audibleFrames": 3183,
+          "onOffMismatchFrames": 0,
+          "dutyMismatchAudibleFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "pitchComparedFrames": 3183,
+          "sourceHardwareSweepFrames": 0,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "pulse2": {
+          "frames": 3199,
+          "audibleFrames": 3183,
+          "onOffMismatchFrames": 0,
+          "dutyMismatchAudibleFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "pitchComparedFrames": 3183,
+          "sourceHardwareSweepFrames": 0,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "triangle": {
+          "onOffMismatchFrames": 0,
+          "pitchComparedFrames": 2506,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "noise": {
+          "audibleFrames": 1513,
+          "onOffMismatchFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "periodMismatchAudibleFrames": 0
+        }
+      },
+      "importLog": "",
+      "exportLog": "Info: Sound engine code size: 4096 bytes.\n    Info: Song 'Stage 5-3' size: 3583 bytes.\n    Info: NSF export successful, final file size 8320 bytes."
+    },
+    {
+      "source": "D:\\LLM\\项目\\音乐工程\\02 三目童子驱动（8000-B7B0-8000）\\05 三目童子 - 08 - Boss Fight.nsf",
+      "sourceSha256": "48BE056CACD07D500EFB7C28BBEB43AC85F7B9435618D1934FE3A78B40A065B2",
+      "title": "Boss Fight",
+      "sourceSelector": "$07",
+      "firstAudibleCall": 2,
+      "skippedSilentFrames": 1,
+      "importStartFrame": 15,
+      "leadingSilenceAdjustmentFrames": 14,
+      "oneShot": false,
+      "sourceLoopStartFrame": 114,
+      "sourceLoopEndFrame": 12658,
+      "sourceLoopLengthFrames": 12544,
+      "loopDetection": "exact-full-state-loop",
+      "patternFrames": 128,
+      "patternCount": 99,
+      "loopPattern": 1,
+      "project": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\projects\\Boss Fight（精修通用驱动版）_FamiStudio.txt",
+      "projectSha256": "BC7AB15C7ECB0D5254CFEE5836B321941E4165B612913311352AEB6D6F2DA99B",
+      "nsf": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\三目童子 - Boss Fight（精修通用驱动版）.nsf",
+      "nsfBytes": 16512,
+      "nsfSha256": "76F55DD9FA5F4B0C36C044ABCDE9809D76CEAF45BCEAA62A9B5722AF6B9A9DD1",
+      "driverSha256": "20C0C421ADCE739DB24D8C9D445FB1FC6052C59668B3405967156833F402D431",
+      "apuStateComparedFrames": 25216,
+      "apuStateMismatchFrames": 0,
+      "sourceFidelity": {
+        "comparedFrames": 12657,
+        "sourceFrameRange": [
+          1,
+          12658
+        ],
+        "convertedFrameRange": [
+          15,
+          12672
+        ],
+        "pulse1": {
+          "frames": 12657,
+          "audibleFrames": 12471,
+          "onOffMismatchFrames": 0,
+          "dutyMismatchAudibleFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "pitchComparedFrames": 12471,
+          "sourceHardwareSweepFrames": 0,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "pulse2": {
+          "frames": 12657,
+          "audibleFrames": 12471,
+          "onOffMismatchFrames": 0,
+          "dutyMismatchAudibleFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "pitchComparedFrames": 12471,
+          "sourceHardwareSweepFrames": 0,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "triangle": {
+          "onOffMismatchFrames": 0,
+          "pitchComparedFrames": 8329,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "noise": {
+          "audibleFrames": 8763,
+          "onOffMismatchFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "periodMismatchAudibleFrames": 0
+        }
+      },
+      "importLog": "",
+      "exportLog": "Info: Sound engine code size: 4096 bytes.\n    Info: Song 'Boss Fight' size: 9326 bytes.\n    Info: NSF export successful, final file size 16512 bytes."
+    },
+    {
+      "source": "D:\\LLM\\项目\\音乐工程\\02 三目童子驱动（8000-B7B0-8000）\\06 三目童子 - 09 - Introduction.nsf",
+      "sourceSha256": "F65C5E53EBAC4970600160A2F25778372F0D8C75D7FF5B553899BC9EB10218AE",
+      "title": "Introduction",
+      "sourceSelector": "$08",
+      "firstAudibleCall": 2,
+      "skippedSilentFrames": 1,
+      "importStartFrame": 0,
+      "leadingSilenceAdjustmentFrames": -1,
+      "oneShot": false,
+      "sourceLoopStartFrame": 1,
+      "sourceLoopEndFrame": 2049,
+      "sourceLoopLengthFrames": 2048,
+      "loopDetection": "exact-eventual-APU-period",
+      "patternFrames": 2048,
+      "patternCount": 1,
+      "loopPattern": 0,
+      "project": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\projects\\Introduction（精修通用驱动版）_FamiStudio.txt",
+      "projectSha256": "A5209333CBACE3DB18922509A8E58D8F02AFDE907BD771C4804A901BFAFC8502",
+      "nsf": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\三目童子 - Introduction（精修通用驱动版）.nsf",
+      "nsfBytes": 8320,
+      "nsfSha256": "5DE23FC50928A7A6B5F1DC5A223E3208DE64D3C9494EC7E6B1870584CD3F5868",
+      "driverSha256": "20C0C421ADCE739DB24D8C9D445FB1FC6052C59668B3405967156833F402D431",
+      "apuStateComparedFrames": 4096,
+      "apuStateMismatchFrames": 0,
+      "sourceFidelity": {
+        "comparedFrames": 2048,
+        "sourceFrameRange": [
+          1,
+          2049
+        ],
+        "convertedFrameRange": [
+          0,
+          2048
+        ],
+        "pulse1": {
+          "frames": 2048,
+          "audibleFrames": 2013,
+          "onOffMismatchFrames": 0,
+          "dutyMismatchAudibleFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "pitchComparedFrames": 1797,
+          "sourceHardwareSweepFrames": 216,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "pulse2": {
+          "frames": 2048,
+          "audibleFrames": 2015,
+          "onOffMismatchFrames": 0,
+          "dutyMismatchAudibleFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "pitchComparedFrames": 1799,
+          "sourceHardwareSweepFrames": 216,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "triangle": {
+          "onOffMismatchFrames": 0,
+          "pitchComparedFrames": 1444,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "noise": {
+          "audibleFrames": 1271,
+          "onOffMismatchFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "periodMismatchAudibleFrames": 0
+        }
+      },
+      "importLog": "",
+      "exportLog": "Info: Sound engine code size: 4096 bytes.\n    Info: Song 'Introduction' size: 3189 bytes.\n    Info: NSF export successful, final file size 8320 bytes."
+    },
+    {
+      "source": "D:\\LLM\\项目\\音乐工程\\02 三目童子驱动（8000-B7B0-8000）\\07 三目童子 - 10 - Ending (Epilogue).nsf",
+      "sourceSha256": "CA92E02762290E89390C953A3097A1C3E26CFF3632F29EA9B08C98CBC6372A07",
+      "title": "Ending (Epilogue)",
+      "sourceSelector": "$09",
+      "firstAudibleCall": 2,
+      "skippedSilentFrames": 1,
+      "importStartFrame": 3,
+      "leadingSilenceAdjustmentFrames": 2,
+      "oneShot": false,
+      "sourceLoopStartFrame": 43,
+      "sourceLoopEndFrame": 2923,
+      "sourceLoopLengthFrames": 2880,
+      "loopDetection": "exact-full-state-loop",
+      "patternFrames": 45,
+      "patternCount": 65,
+      "loopPattern": 1,
+      "project": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\projects\\Ending (Epilogue)（精修通用驱动版）_FamiStudio.txt",
+      "projectSha256": "4C7EA292431BF478BE730A0195914902C6A7C8D58A0E7B05142B4C4E839108BF",
+      "nsf": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\02 三目童子（精修通用驱动）\\三目童子 - Ending (Epilogue)（精修通用驱动版）.nsf",
+      "nsfBytes": 8320,
+      "nsfSha256": "2AFBB1C43350FE54A30CA82AB80756ACE7C646966A939208947804BB4D4C4F81",
+      "driverSha256": "20C0C421ADCE739DB24D8C9D445FB1FC6052C59668B3405967156833F402D431",
+      "apuStateComparedFrames": 5805,
+      "apuStateMismatchFrames": 0,
+      "sourceFidelity": {
+        "comparedFrames": 2922,
+        "sourceFrameRange": [
+          1,
+          2923
+        ],
+        "convertedFrameRange": [
+          3,
+          2925
+        ],
+        "pulse1": {
+          "frames": 2922,
+          "audibleFrames": 2760,
+          "onOffMismatchFrames": 0,
+          "dutyMismatchAudibleFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "pitchComparedFrames": 2760,
+          "sourceHardwareSweepFrames": 0,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "pulse2": {
+          "frames": 2922,
+          "audibleFrames": 2760,
+          "onOffMismatchFrames": 0,
+          "dutyMismatchAudibleFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "pitchComparedFrames": 2760,
+          "sourceHardwareSweepFrames": 0,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "triangle": {
+          "onOffMismatchFrames": 0,
+          "pitchComparedFrames": 2822,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "noise": {
+          "audibleFrames": 0,
+          "onOffMismatchFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "periodMismatchAudibleFrames": 0
+        }
+      },
+      "importLog": "",
+      "exportLog": "Info: Sound engine code size: 4096 bytes.\n    Info: Song 'Ending (Epilogue)' size: 1649 bytes.\n    Info: NSF export successful, final file size 8320 bytes."
+    }
+  ]
+}

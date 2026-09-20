@@ -1,0 +1,24 @@
+{
+  "sourceBytes": 1310736,
+  "sourceSha256": "2D2DBB50B3240A972C79541542080FC293419970F2DA8D9E216D0221638E98DE",
+  "outputBytes": 1310736,
+  "outputSha256": "EDFA40E25C7029E747CA72A25EFF100B035C55CB817AE2840E541229358A4984",
+  "command": "0xA6",
+  "logicalId": "0x23",
+  "dataBank": "0x78",
+  "songDataSha256": "1260D54D37B02C21C7A86B7A73D1E33EE42EA9D4ACD8C1484ADD754D08B8FE10",
+  "fceuxLatchClears": 2,
+  "bridgeBytes": 208,
+  "bridgeSha256": "662229F95D111D428B56CDA28066E4CA936C0B80D25C83437ECD0FEAF27B9667",
+  "wrapperBytes": 373,
+  "wrapperSha256": "AC3726C89D190AB551C6251AFD100F9E4A30DD506393C1A482603FA88BE075D0",
+  "changedBytes": 4270,
+  "preserved": [
+    "header",
+    "original PRG and CHR shadow",
+    "existing 15 song data banks $65-$73",
+    "relocated common driver",
+    "dispatcher and SFX bank",
+    "fixed banks and active CHR"
+  ]
+}

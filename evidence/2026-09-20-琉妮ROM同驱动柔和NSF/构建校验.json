@@ -1,0 +1,90 @@
+{
+  "format": "Flapper Girl softened-data rebuild with ROM common driver v1",
+  "source": "D:\\LLM\\项目\\音乐工程\\01 精修通用驱动（F000-F100-F160）\\优化版（更柔和）\\Flapper Girl - 琉妮精修.nsf",
+  "sourceSha256": "9BD70819CE7E5786BB16F523956DB7B79ECC2026D52BC72BCF4582F6E530B7CA",
+  "reference": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\01 精修通用驱动（F000-F100-F160）\\Flapper Girl - 琉妮精修.nsf",
+  "referenceDriverSha256": "20C0C421ADCE739DB24D8C9D445FB1FC6052C59668B3405967156833F402D431",
+  "loop": {
+    "first_audible_call": 5,
+    "loop_start": 4707,
+    "loop_end": 13230,
+    "loop_length": 8523,
+    "one_shot": false,
+    "frames_scanned": 13230,
+    "detection": "exact-full-state-loop"
+  },
+  "importStartFrame": 4,
+  "loopBoundaryShiftFrames": 28,
+  "patternFrames": 947,
+  "compaction": {
+    "patternFrames": 947,
+    "totalFrames": 13258,
+    "instrumentsAdded": 128,
+    "rewrittenNotes": 2339,
+    "removedVolumeEvents": 9784,
+    "maxEnvelopeFrames": 40
+  },
+  "rawExportBytes": 16512,
+  "candidate": "D:\\LLM\\项目\\替换音乐新项目\\build\\flapper_rom_driver_soft_rebuild\\final-v2\\output\\Flapper Girl - 琉妮精修（ROM同驱动柔和数据版）.nsf",
+  "candidateBytes": 16512,
+  "fitsCurrentRomSingle8KiBDataBank": false,
+  "candidateSha256": "3AADC8A3F2D5A03B9F7B653790D98ECE94848FDCF76EB5F26629B27BECFD3B3E",
+  "candidateDriverSha256": "20C0C421ADCE739DB24D8C9D445FB1FC6052C59668B3405967156833F402D431",
+  "candidateSongDataSha256": "C7C3BD85C4987E14A71A7FB5E2991A28A5270D0902ACB1EDCF58F21688F8CE0C",
+  "driverRebindMismatchFrames": 0,
+  "sourceFidelity": {
+    "comparedFrames": 13226,
+    "sourceFrameRange": [
+      4,
+      13230
+    ],
+    "convertedFrameRange": [
+      4,
+      13230
+    ],
+    "pulse1": {
+      "frames": 13226,
+      "audibleFrames": 11940,
+      "onOffMismatchFrames": 0,
+      "dutyMismatchAudibleFrames": 0,
+      "meanAbsoluteVolumeError": 0.0,
+      "pitchComparedFrames": 11940,
+      "sourceHardwareSweepFrames": 0,
+      "pitchWithin25CentsPercent": 100.0,
+      "maxPitchErrorCents": 0.0
+    },
+    "pulse2": {
+      "frames": 13226,
+      "audibleFrames": 9987,
+      "onOffMismatchFrames": 0,
+      "dutyMismatchAudibleFrames": 0,
+      "meanAbsoluteVolumeError": 0.0,
+      "pitchComparedFrames": 9987,
+      "sourceHardwareSweepFrames": 0,
+      "pitchWithin25CentsPercent": 100.0,
+      "maxPitchErrorCents": 0.0
+    },
+    "triangle": {
+      "onOffMismatchFrames": 0,
+      "pitchComparedFrames": 10988,
+      "pitchWithin25CentsPercent": 100.0,
+      "maxPitchErrorCents": 0.0
+    },
+    "noise": {
+      "audibleFrames": 7042,
+      "onOffMismatchFrames": 0,
+      "meanAbsoluteVolumeError": 0.0,
+      "periodMismatchAudibleFrames": 0
+    },
+    "dmc": {
+      "sourceTriggerCount": 0,
+      "convertedTriggerCount": 0,
+      "triggerMismatchFrames": 0,
+      "sourceSamples": [],
+      "convertedSamples": []
+    }
+  },
+  "sourceFidelityPassed": true,
+  "importLog": "",
+  "exportLog": "Info: Sound engine code size: 4096 bytes.\n    Info: Song 'Flapper Girl - 琉妮精修（ROM同驱动柔和数据版）' size: 9702 bytes.\n    Info: NSF export successful, final file size 16512 bytes."
+}

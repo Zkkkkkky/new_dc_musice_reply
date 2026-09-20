@@ -1,0 +1,143 @@
+{
+  "format": "Ninja Gaiden to refined F000/F100/F160 common driver v1",
+  "source": {
+    "path": "D:\\LLM\\项目\\音乐工程\\03 忍者龙剑传驱动（FC00-C040-8000）\\01 忍者龙剑传 - 15 - 鲜烈之龙（4-2）.nsf",
+    "bytes": 17605,
+    "sha256": "665E227AF1B005EFD1119A35B06E383C59D339EAD20713603A80343BAFDFF460",
+    "loadInitPlay": [
+      "$FC00",
+      "$C040",
+      "$8000"
+    ],
+    "bankInit": "01 02 03 04 05 00 00 00"
+  },
+  "referenceNsf": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\01 精修通用驱动（F000-F100-F160）\\JUST COMMUNICATION - 高达EW精修.nsf",
+  "referenceNsfSha256": "38EE5BEE3D74F94F8544C7BB6BABD848365C4F58C545733BCA0D257CA1A69042",
+  "commonDriverSha256": "20C0C421ADCE739DB24D8C9D445FB1FC6052C59668B3405967156833F402D431",
+  "famiStudio": "D:\\LLM\\项目\\音乐工程\\.tools\\FamiStudio453\\FamiStudio.exe",
+  "tracks": [
+    {
+      "source": "D:\\LLM\\项目\\音乐工程\\03 忍者龙剑传驱动（FC00-C040-8000）\\01 忍者龙剑传 - 15 - 鲜烈之龙（4-2）.nsf",
+      "sourceSha256": "665E227AF1B005EFD1119A35B06E383C59D339EAD20713603A80343BAFDFF460",
+      "title": "鲜烈之龙（4-2）",
+      "sourceSelector": null,
+      "firstAudibleCall": 11,
+      "skippedSilentFrames": 10,
+      "importStartFrame": 9,
+      "leadingSilenceAdjustmentFrames": -1,
+      "oneShot": false,
+      "sourceLoopStartFrame": 1067,
+      "sourceLoopEndFrame": 3563,
+      "sourceLoopLengthFrames": 2496,
+      "loopDetection": "exact-full-state-loop",
+      "patternFrames": 26,
+      "patternCount": 137,
+      "loopPattern": 41,
+      "project": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\03 忍者龙剑传（精修通用驱动）\\projects\\鲜烈之龙（4-2）（精修通用驱动版）_FamiStudio.txt",
+      "projectSha256": "D19D9AA945B2A130BF586D9D304CB955D59EE280F0962D7CC4D774FAFCFD3D7A",
+      "nsf": "D:\\LLM\\项目\\替换音乐新项目\\assets\\music\\03 忍者龙剑传（精修通用驱动）\\忍者龙剑传 - 鲜烈之龙（4-2）（精修通用驱动版）.nsf",
+      "nsfBytes": 16512,
+      "nsfSha256": "B40503F449DAD9D00C56682F1F25A2A10EF73162A2F4C5E34139E5D4965404B5",
+      "driverSha256": "FBA5D4234780BCEA0202ECB7A11F90F91054677AF866D20AD589626A1370443F",
+      "preservedDriverConfigOffsets": [
+        "$000",
+        "$003",
+        "$004"
+      ],
+      "overriddenDpcmSamples": [
+        {
+          "name": "Sample 1",
+          "bytes": 257,
+          "sha256": "69157CCAF6EC03055E301E87A8FE124AA11295A171202DEE6515F6F106176D50"
+        },
+        {
+          "name": "Sample 2",
+          "bytes": 513,
+          "sha256": "74A169688ADD43FEDD74B5072F38A5F24778D5911957E3CDDE2D8E38FAD68961"
+        }
+      ],
+      "apuStateComparedFrames": 6058,
+      "apuStateMismatchFrames": 0,
+      "sourceFidelity": {
+        "comparedFrames": 3553,
+        "sourceFrameRange": [
+          10,
+          3563
+        ],
+        "convertedFrameRange": [
+          9,
+          3562
+        ],
+        "pulse1": {
+          "frames": 3553,
+          "audibleFrames": 3373,
+          "onOffMismatchFrames": 0,
+          "dutyMismatchAudibleFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "pitchComparedFrames": 3373,
+          "sourceHardwareSweepFrames": 0,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "pulse2": {
+          "frames": 3553,
+          "audibleFrames": 2757,
+          "onOffMismatchFrames": 0,
+          "dutyMismatchAudibleFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "pitchComparedFrames": 2757,
+          "sourceHardwareSweepFrames": 0,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "triangle": {
+          "onOffMismatchFrames": 0,
+          "pitchComparedFrames": 1741,
+          "pitchWithin25CentsPercent": 100.0,
+          "maxPitchErrorCents": 0.0
+        },
+        "noise": {
+          "audibleFrames": 2461,
+          "onOffMismatchFrames": 0,
+          "meanAbsoluteVolumeError": 0.0,
+          "periodMismatchAudibleFrames": 0
+        },
+        "dmc": {
+          "sourceTriggerCount": 197,
+          "convertedTriggerCount": 197,
+          "triggerMismatchFrames": 0,
+          "sourceSamples": [
+            {
+              "rateControl": 15,
+              "directLoad": 0,
+              "bytes": 257,
+              "sha256": "69157CCAF6EC03055E301E87A8FE124AA11295A171202DEE6515F6F106176D50"
+            },
+            {
+              "rateControl": 15,
+              "directLoad": 0,
+              "bytes": 513,
+              "sha256": "74A169688ADD43FEDD74B5072F38A5F24778D5911957E3CDDE2D8E38FAD68961"
+            }
+          ],
+          "convertedSamples": [
+            {
+              "rateControl": 15,
+              "directLoad": 0,
+              "bytes": 257,
+              "sha256": "69157CCAF6EC03055E301E87A8FE124AA11295A171202DEE6515F6F106176D50"
+            },
+            {
+              "rateControl": 15,
+              "directLoad": 0,
+              "bytes": 513,
+              "sha256": "74A169688ADD43FEDD74B5072F38A5F24778D5911957E3CDDE2D8E38FAD68961"
+            }
+          ]
+        }
+      },
+      "importLog": "",
+      "exportLog": "Info: Sound engine code size: 4096 bytes.\n    Info: Allocating 1 bank(s) (4096 bytes) for DPCM samples.\n    Info: Project uses DPCM bank switching, separate DMC files will be generated for each bank.\n    Info: Song '鲜烈之龙（4-2）' size: 7115 bytes.\n    Info: NSF export successful, final file size 16512 bytes."
+    }
+  ]
+}
